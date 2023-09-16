@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "792912184713",
+    "project_id": "ywda-dfc54",
+    "storage_bucket": "ywda-dfc54.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:792912184713:android:4389591bf7cf9b12758d58",
+        "android_client_info": {
+          "package_name": "com.example.ywda"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbLiE17MLPCBaOaomgX1w94SCltcabIKY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
