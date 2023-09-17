@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ywda/models/organization_model.dart';
+import 'package:ywda/widgets/bordered_text_container_widgert.dart';
 import 'package:ywda/widgets/custom_textfield_widget.dart';
 import 'package:ywda/widgets/dropdown_widget.dart';
 
@@ -25,31 +28,62 @@ class RegisterSecondPageScreen extends StatefulWidget {
 
 class _RegisterSecondPageScreenState extends State<RegisterSecondPageScreen> {
   bool _isLoading = false;
+
+  final TextEditingController _categoryController = TextEditingController();
+  final TextEditingController _schoolController = TextEditingController();
+  String? _selectedStatus = '';
   String? _selectedOrg = '';
   String? _selectedNature;
-  String? _selectedStatus = '';
-
-  final TextEditingController _orgController = TextEditingController();
-  final TextEditingController _schoolController = TextEditingController();
   final TextEditingController _positionController = TextEditingController();
+
   @override
   void dispose() {
     super.dispose();
-    _orgController.dispose();
+    _categoryController.dispose();
     _schoolController.dispose();
     _positionController.dispose();
   }
 
   void _submitRegistrationData() async {
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+    final navigator = Navigator.of(context);
+    if (_categoryController.text.isEmpty ||
+        _schoolController.text.isEmpty ||
+        _selectedStatus == null ||
+        _selectedOrg == null ||
+        _selectedNature == null ||
+        _positionController.text.isEmpty) {
+      scaffoldMessenger.showSnackBar(
+          const SnackBar(content: Text('Please fill up all fields')));
+      return;
+    }
     try {
       setState(() {
         _isLoading = true;
       });
+
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .update({
+        'accountInitialized': true,
+        'fullName': widget.fullName,
+        'gender': widget.gender,
+        'civilStatus': widget.civilStatus,
+        'birthday': widget.birthday,
+        'category': _categoryController.text,
+        'organization': _selectedOrg,
+        'orgPosition': _positionController.text,
+        'orgStatus': _selectedStatus,
+        'school': _schoolController.text
+      });
+
+      navigator.pushNamedAndRemoveUntil('/home', ModalRoute.withName('/'));
     } catch (error) {
       setState(() {
         _isLoading = false;
       });
-      _orgController.clear();
+      _categoryController.clear();
     }
   }
 
@@ -82,32 +116,48 @@ class _RegisterSecondPageScreenState extends State<RegisterSecondPageScreen> {
                     children: [
                       const SizedBox(height: 30),
                       Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: dropdownWidget(
-                              _selectedOrg != null ? _selectedOrg! : '',
-                              (selected) {
-                            setState(() {
-                              if (selected != null) {
-                                _selectedOrg = selected;
-                                setState(() {
-                                  _selectedNature =
-                                      getOrganizationByName(_selectedOrg!)
-                                          .nature;
-                                });
-                              }
-                            });
-                          }, getOrganizationNames(), 'Organization', true)),
+                        padding: const EdgeInsets.all(8.0),
+                        child: customTextField('Youth Category',
+                            _categoryController, TextInputType.name),
+                      ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Text(
-                              _selectedNature != null
-                                  ? _selectedNature!
-                                  : 'Nature of Organization',
-                              style: GoogleFonts.poppins()),
-                        ),
+                        child: customTextField(
+                            'School', _schoolController, TextInputType.name),
+                      ),
+                      dropdownWidget(
+                          _selectedStatus != null ? _selectedStatus! : '',
+                          (selected) {
+                        setState(() {
+                          if (selected != null) {
+                            _selectedStatus = selected;
+                          }
+                        });
+                      }, ['STUDENT', 'WORKING', 'NOT APPLICABLE'], 'Status',
+                          false),
+                      dropdownWidget(_selectedOrg != null ? _selectedOrg! : '',
+                          (selected) {
+                        setState(() {
+                          if (selected != null) {
+                            _selectedOrg = selected;
+                            _selectedNature =
+                                getOrganizationByName(_selectedOrg!)
+                                        .nature
+                                        .isNotEmpty
+                                    ? getOrganizationByName(_selectedOrg!)
+                                        .nature
+                                    : 'N/A';
+                          }
+                        });
+                      }, getOrganizationNames(), 'Organization', true),
+                      borderedTextContainer(
+                        'Nature of Organization',
+                        _selectedNature != null ? _selectedNature! : '',
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: customTextField('Position', _positionController,
+                            TextInputType.name),
                       ),
                       const SizedBox(height: 50),
                       Padding(

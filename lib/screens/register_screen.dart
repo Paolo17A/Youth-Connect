@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:ywda/screens/register_second_page_screen.dart';
+import 'package:ywda/widgets/bordered_text_container_widgert.dart';
 import 'package:ywda/widgets/dropdown_widget.dart';
 
 import '../widgets/custom_textfield_widget.dart';
@@ -18,6 +19,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String _gender = 'MALE';
   String _civilStatus = 'SINGLE';
   DateTime? _selectedDate;
+  int? age;
   final TextEditingController _cityController = TextEditingController();
 
   @override
@@ -37,8 +39,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (picked != null && picked != DateTime.now()) {
       setState(() {
         _selectedDate = picked;
+        age = _calculateAge(_selectedDate!);
       });
     }
+  }
+
+  int _calculateAge(DateTime birthDate) {
+    final now = DateTime.now();
+    int age = now.year - birthDate.year;
+
+    if (now.month < birthDate.month ||
+        (now.month == birthDate.month && now.day < birthDate.day)) {
+      age--;
+    }
+
+    return age;
   }
 
   void _submitInput() {
@@ -46,7 +61,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
         _selectedDate == null ||
         _cityController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please fill up all the fields')));
+          const SnackBar(content: Text('Please fill up all the fields.')));
+      return;
+    }
+
+    if (age! < 15 || age! > 30) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('You must be 15-30 years old to join.')));
       return;
     }
 
@@ -108,27 +129,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: dropdownWidget(_gender, (selected) {
-                          setState(() {
-                            if (selected != null) {
-                              _gender = selected;
-                            }
-                          });
-                        }, ['MALE', 'FEMALE'], 'Gender', false),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: dropdownWidget(_civilStatus, (selected) {
-                          setState(() {
-                            if (selected != null) {
-                              _civilStatus = selected;
-                            }
-                          });
-                        }, ['SINGLE', 'MARRIED', 'ANNULLED', 'WIDOWED'],
-                            'Civil Status', false),
-                      ),
+                      dropdownWidget(_gender, (selected) {
+                        setState(() {
+                          if (selected != null) {
+                            _gender = selected;
+                          }
+                        });
+                      }, [
+                        'WOMAN',
+                        'MAN',
+                        'NON-BINARY',
+                        'TRANSGENDER',
+                        'INTERSEX',
+                        'PREFER NOT TO SAY'
+                      ], 'Gender', false),
+                      dropdownWidget(_civilStatus, (selected) {
+                        setState(() {
+                          if (selected != null) {
+                            _civilStatus = selected;
+                          }
+                        });
+                      }, [
+                        'SINGLE',
+                        'MARRIED',
+                        'DIVORCED',
+                        'SINGLE-PARENTS' 'WIDOWED',
+                        'SEPARATE'
+                      ], 'Civil Status', false),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
@@ -153,7 +180,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   onPressed: () => _selectDate(context),
                                   child: Text(
                                       _selectedDate != null
-                                          ? DateFormat('MMM dd yyyy')
+                                          ? DateFormat('MMM dd, yyyy')
                                               .format(_selectedDate!)
                                           : '',
                                       style: GoogleFonts.poppins(
@@ -162,6 +189,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ],
                         ),
                       ),
+                      borderedTextContainer(
+                          'Age', age != null ? '$age years old' : ''),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
