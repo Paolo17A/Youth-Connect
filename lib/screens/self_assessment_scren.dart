@@ -38,8 +38,9 @@ class SelfAssessmentScreen extends StatelessWidget {
                       children: [
                         _selfAssessmentButton(
                             'lib/assets/images/icons/icons-creativity.png',
-                            'SKILLS DEVELOPMENT',
-                            () {}),
+                            'SKILLS DEVELOPMENT', () {
+                          Navigator.of(context).pushNamed('/skills');
+                        }),
                         _selfAssessmentButton(
                             'lib/assets/images/icons/Bread.png',
                             'GENDER DEVELOPMENT',

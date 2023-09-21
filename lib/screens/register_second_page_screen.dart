@@ -75,7 +75,8 @@ class _RegisterSecondPageScreenState extends State<RegisterSecondPageScreen> {
         'organization': _selectedOrg,
         'orgPosition': _positionController.text,
         'orgStatus': _selectedStatus,
-        'school': _schoolController.text
+        'school': _schoolController.text,
+        'skillsDeveloped': {}
       });
 
       navigator.pushNamedAndRemoveUntil('/home', ModalRoute.withName('/'));
