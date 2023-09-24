@@ -19,7 +19,7 @@
     </intent>
     </queries>
     <application
-        android:label="ywda"
+        android:label="Youth Connect"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

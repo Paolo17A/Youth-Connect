@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 import 'package:ywda/utils/quit_dialogue_util.dart';
 import 'package:ywda/widgets/app_bottom_navbar_widget.dart';
 
@@ -35,6 +36,16 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _isLoading = false;
     });
+  }
+
+  Future<Uint8List> generateThumbnail(String videoPath) async {
+    final uint8list = await VideoThumbnail.thumbnailData(
+        video: videoPath,
+        imageFormat: ImageFormat.JPEG,
+        maxWidth:
+            128, // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
+        quality: 25);
+    return uint8list!;
   }
 
   @override
@@ -230,9 +241,24 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     child: Container(
                                                       width: 80,
                                                       height: 80,
-                                                      child: Image.network(
-                                                          videos[index]
-                                                              ['videoURL']),
+                                                      child: FutureBuilder(
+                                                          future:
+                                                              generateThumbnail(
+                                                                  videos[index][
+                                                                      'videoURL']),
+                                                          builder: (context,
+                                                              snapshot) {
+                                                            if (snapshot
+                                                                    .connectionState ==
+                                                                ConnectionState
+                                                                    .done) {
+                                                              return Image.memory(
+                                                                  snapshot
+                                                                      .data!);
+                                                            } else {
+                                                              return CircularProgressIndicator();
+                                                            }
+                                                          }),
                                                     ),
                                                   ),
                                                   Padding(

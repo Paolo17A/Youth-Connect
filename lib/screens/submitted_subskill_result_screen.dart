@@ -52,7 +52,7 @@ class SubmittesSubskillResultScreen extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(11),
                   child: SingleChildScrollView(
-                      child: Text(submittedSubskill['essayURL'],
+                      child: Text(submittedSubskill['essayContent'],
                           style: TextStyle(fontSize: 15))),
                 ))
         ])));
