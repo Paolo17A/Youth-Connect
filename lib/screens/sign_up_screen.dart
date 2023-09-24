@@ -102,7 +102,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         'organization': '',
         'orgPosition': '',
         'orgStatus': '',
-        'school': ''
+        'school': '',
+        'skillsDeveloped': {}
       });
 
       //  Send email verification link to user's email.

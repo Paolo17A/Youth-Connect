@@ -1,0 +1,24 @@
+{
+    "articles": [
+        {
+            "articleTitle": "This is a sample article",
+            "articleContent": "This is the content for this article",
+            "imageURLs": []
+        },
+        {
+            "articleTitle": "This is a another sample article",
+            "articleContent": "This is another sample content for this article",
+            "imageURLs": []
+        },
+        {
+            "articleTitle": "Jumbo Hotdog",
+            "articleContent": "JUMBO HOTDOG KAYA MO BA TO DI KAMI BATO PARA MAGPATALO",
+            "imageURLs": ["https://images.genius.com/b74625e08a43b0b30a53907336251604.1000x1000x1.png"]
+        },
+        {
+            "articleTitle": "Enchanted Lyrics",
+            "articleContent": "There I was again tonight \n Forcing laughter, faking smiles \n Same old tired, lonely place \n Walls of insincerity, shifting eyes and vacancy \n Vanished when I saw your face \n All I can say is, it was enchanting to meet you",
+            "imageURLs": ["https://images.genius.com/b74625e08a43b0b30a53907336251604.1000x1000x1.png"]
+        }
+    ]
+}

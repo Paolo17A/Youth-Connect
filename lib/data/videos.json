@@ -1,0 +1,12 @@
+{
+    "videos": [
+        {
+            "videoTitle": "This is a sample video",
+            "videoURL": "https://firebasestorage.googleapis.com/v0/b/ywda-dfc54.appspot.com/o/posts%2Fvideos%2FLesson20.mp4?alt=media&token=7e99b2c7-ab79-40b7-8ecb-777f311882d8"
+        },
+        {
+            "videoTitle": "This is another sample video",
+            "videoURL": "https://firebasestorage.googleapis.com/v0/b/ywda-dfc54.appspot.com/o/posts%2Fvideos%2FLesson20.mp4?alt=media&token=7e99b2c7-ab79-40b7-8ecb-777f311882d8"
+        }
+    ]
+}

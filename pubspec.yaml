@@ -44,6 +44,7 @@ dependencies:
   dropdown_search: ^5.0.6
   url_launcher: ^6.1.14
   flutter_launcher_icons: ^0.13.1
+  video_thumbnail: ^0.5.3
 
 dev_dependencies:
   flutter_test:
@@ -76,7 +77,7 @@ flutter:
     - lib/assets/images/ywda_logo.png
     - lib/assets/images/icons/
     - lib/assets/images/Organizations/
-  #   - images/a_dot_ham.jpeg
+    - lib/data/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
