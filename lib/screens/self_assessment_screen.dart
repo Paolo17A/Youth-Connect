@@ -29,47 +29,53 @@ class SelfAssessmentScreen extends StatelessWidget {
           ),
           bottomNavigationBar: bottomNavigationBar(context, 0),
           body: SafeArea(
-            child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Column(
-                      children: [
-                        _selfAssessmentButton(
-                            'lib/assets/images/icons/icons-creativity.png',
-                            'SKILLS DEVELOPMENT', () {
-                          Navigator.of(context).pushNamed('/skills');
-                        }),
-                        _selfAssessmentButton(
-                            'lib/assets/images/icons/Bread.png',
-                            'GENDER DEVELOPMENT',
-                            () {}),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        const SizedBox(height: 90),
-                        _selfAssessmentButton(
-                            'lib/assets/images/icons/icons-brain.png',
-                            'MENTAL HEALTH', () async {
-                          final url = Uri.parse(
-                              'https://play.google.com/store/apps/details?id=ph.gov.doh.lusogisip&hl=en&gl=US');
-                          if (await canLaunchUrl(url)) {
-                            await launchUrl(url);
-                          } else {
-                            // Handle the case where the URL cannot be launched
-                            print('Could not launch $url');
-                          }
-                        }),
-                        _selfAssessmentButton(
-                            'lib/assets/images/icons/Self Identification.png',
-                            'SELF IDENTIFICATION',
-                            () {}),
-                      ],
-                    )
-                  ],
-                )),
+            child: SingleChildScrollView(
+              child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Column(
+                        children: [
+                          _selfAssessmentButton(
+                              'lib/assets/images/icons/icons-creativity.png',
+                              'SKILLS DEVELOPMENT', () {
+                            Navigator.of(context).pushNamed('/skills');
+                          }),
+                          _selfAssessmentButton(
+                              'lib/assets/images/icons/Bread.png',
+                              'GENDER DEVELOPMENT',
+                              () {}),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          const SizedBox(height: 90),
+                          _selfAssessmentButton(
+                              'lib/assets/images/icons/icons-brain.png',
+                              'MENTAL HEALTH', () async {
+                            final url = Uri.parse(
+                                'https://play.google.com/store/apps/details?id=ph.gov.doh.lusogisip&hl=en&gl=US');
+                            if (await canLaunchUrl(url)) {
+                              await launchUrl(url);
+                            } else {
+                              // Handle the case where the URL cannot be launched
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content:
+                                          Text('Unable to open Play Store.')));
+                            }
+                          }),
+                          _selfAssessmentButton(
+                              'lib/assets/images/icons/Self Identification.png',
+                              'SELF IDENTIFICATION', () {
+                            Navigator.pushNamed(context, '/answerSurvey');
+                          }),
+                        ],
+                      )
+                    ],
+                  )),
+            ),
           )),
     );
   }

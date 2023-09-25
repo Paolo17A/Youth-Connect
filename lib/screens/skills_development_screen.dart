@@ -51,7 +51,7 @@ class _SkillsDevelopmentScreenState extends State<SkillsDevelopmentScreen> {
                   style: GoogleFonts.poppins(
                       textStyle: TextStyle(fontWeight: FontWeight.bold))),
             ),
-            automaticallyImplyLeading: true),
+            automaticallyImplyLeading: false),
         bottomNavigationBar: bottomNavigationBar(context, 0),
         body: _isLoading
             ? Center(child: CircularProgressIndicator())

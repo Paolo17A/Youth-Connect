@@ -241,6 +241,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     child: Container(
                                                       width: 80,
                                                       height: 80,
+                                                      color: Colors.black,
                                                       child: FutureBuilder(
                                                           future:
                                                               generateThumbnail(

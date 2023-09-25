@@ -5,9 +5,10 @@ import 'package:ywda/screens/all_organizations_screen.dart';
 import 'package:ywda/screens/home_screen.dart';
 import 'package:ywda/screens/login_screen.dart';
 import 'package:ywda/screens/register_screen.dart';
-import 'package:ywda/screens/self_assessment_scren.dart';
+import 'package:ywda/screens/self_assessment_screen.dart';
 import 'package:ywda/screens/sign_up_screen.dart';
 import 'package:ywda/screens/skills_development_screen.dart';
+import 'package:ywda/screens/answer_survey_screen.dart';
 import 'package:ywda/screens/user_profile.dart';
 import 'package:ywda/screens/welcome_screen.dart';
 
@@ -30,7 +31,8 @@ class MyApp extends StatelessWidget {
     '/organization': (context) => const AllOrganizationsScreen(),
     '/events': (context) => const AllEventsScreen(),
     '/profile': (context) => const UserProfileScreen(),
-    '/skills': (context) => const SkillsDevelopmentScreen()
+    '/skills': (context) => const SkillsDevelopmentScreen(),
+    '/answerSurvey': (context) => const AnswerSurveyScreen()
   };
 
   final ThemeData _themeData = ThemeData(

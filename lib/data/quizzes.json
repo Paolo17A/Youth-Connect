@@ -1,4 +1,206 @@
 {
-    "Critical Thinking": {},
-    "Professional Etiquette": {}
+    "Critical Thinking": [
+        {
+          "question": "Which of the following is a common advertising objective?",
+          "options": {
+            "a": "Increasing brand awareness",
+            "b": "Reducing production costs",
+            "c": "Improving employee morale",
+            "d": "Enhancing product packaging"
+          },
+          "answer": "a"
+        },
+        {
+          "question": "What is the term used to describe the process of delivering an advertising message to a target audience?",
+          "options": {
+            "a": "Promotion",
+            "b": "Segmentation",
+            "c": "Distribution",
+            "d": "Communication"
+          },
+          "answer": "c"
+        },
+        {
+          "question": "Which of the following is an example of a traditional advertising medium?",
+          "options": {
+            "a": "Social media",
+            "b": "Influencer marketing",
+            "c": "Television",
+            "d": "Search engine optimization"
+          },
+          "answer": "c"
+        },
+        {
+          "question": "What is the purpose of a call-to-action in advertising?",
+          "options": {
+            "a": "To provide contact information for the advertiser",
+            "b": "To highlight the unique selling proposition",
+            "c": "To encourage immediate response or action",
+            "d": "To build brand awareness"
+          },
+          "answer": "c"
+        },
+        {
+          "question": "What is the term used to describe the process of selecting specific media channels to reach the target audience?",
+          "options": {
+            "a": "Media buying",
+            "b": "Market research",
+            "c": "Competitive analysis",
+            "d": "Creative development"
+          },
+          "answer": "a"
+        },
+        {
+          "question": "Which of the following is an example of a demographic segmentation variable?",
+          "options": {
+            "a": "Psychographics",
+            "b": "Geographic location",
+            "c": "Behavioral patterns",
+            "d": "Income level"
+          },
+          "answer": "d"
+        },
+        {
+          "question": "What is the primary purpose of a headline in an advertisement?",
+          "options": {
+            "a": "To introduce the brand or product",
+            "b": "To provide detailed product information",
+            "c": "To grab the attention of the audience",
+            "d": "To list the features and benefits"
+          },
+          "answer": "c"
+        },
+        {
+          "question": "Which of the following is a key element of effective advertising copy?",
+          "options": {
+            "a": "Repetition",
+            "b": "Jargon",
+            "c": "Lengthy paragraphs",
+            "d": "Complex vocabulary"
+          },
+          "answer": "a"
+        },
+        {
+          "question": "What is the term used to describe the process of evaluating the effectiveness of an advertising campaign?",
+          "options": {
+            "a": "Pretesting",
+            "b": "Media planning",
+            "c": "Post-analysis",
+            "d": "Brand positioning"
+          },
+          "answer": "c"
+        },
+        {
+          "question": "Which of the following is an example of a digital advertising format?",
+          "options": {
+            "a": "Billboard",
+            "b": "Radio spot",
+            "c": "Native ad",
+            "d": "Direct mail"
+          },
+          "answer": "c"
+        }
+      ],
+    "Professional Etiquette": [
+        {
+            "question": "What are media ethics?",
+            "options": {
+                "a": "Principles and standards that guide ethical behavior in media",
+                "b": "Rules and regulations enforced by the government",
+                "c": "Strategies for increasing media profits",
+                "d": "Guidelines for effective media marketing"
+            },
+            "answer": "a"
+        },
+        {
+            "question": "Which of the following is an example of an ethical dilemma in media?",
+            "options": {
+                "a": "Publishing misleading information for higher ratings",
+                "b": "Using catchy headlines to grab attention",
+                "c": "Conducting interviews without consent",
+                "d": "All of the above"
+            },
+            "answer": "d"
+        },
+        {
+            "question": "What is the principle of accuracy in media ethics?",
+            "options": {
+                "a": "Presenting information fairly and impartially",
+                "b": "Ensuring that information is factually correct",
+                "c": "Protecting the privacy of individuals",
+                "d": "Avoiding conflicts of interest"
+            },
+            "answer": "b"
+        },
+        {
+            "question": "What is the principle of fairness in media ethics?",
+            "options": {
+                "a": "Providing equal opportunities for all voices to be heard",
+                "b": "Balancing the interests of media organizations and advertisers",
+                "c": "Disclosing potential conflicts of interest",
+                "d": "Promoting sensationalism and controversy"
+            },
+            "answer": "a"
+        },
+        {
+            "question": "What is the principle of transparency in media ethics?",
+            "options": {
+                "a": "Maintaining clear and open communication with the audience",
+                "b": "Protecting the identity of confidential sources",
+                "c": "Avoiding plagiarism and copyright infringement",
+                "d": "Ensuring diversity and representation in media content"
+            },
+            "answer": "a"
+        },
+        {
+            "question": "Which of the following is an example of a media code of ethics?",
+            "options": {
+                "a": "Society of Professional Journalists (SPJ) Code of Ethics",
+                "b": "Federal Communications Commission (FCC) regulations",
+                "c": "Advertising industry guidelines",
+                "d": "None of the above"
+            },
+            "answer": "a"
+        },
+        {
+            "question": "What is the principle of independence in media ethics?",
+            "options": {
+                "a": "Avoiding conflicts of interest and external influences",
+                "b": "Collaborating with other media organizations for better coverage",
+                "c": "Promoting the interests of specific individuals or groups",
+                "d": "Maximizing profits and shareholder value"
+            },
+            "answer": "a"
+        },
+        {
+            "question": "What is the principle of accountability in media ethics?",
+            "options": {
+                "a": "Taking responsibility for the consequences of media content",
+                "b": "Protecting the privacy of sources and individuals",
+                "c": "Prioritizing the needs and interests of the audience",
+                "d": "Expanding the reach and influence of media organizations"
+            },
+            "answer": "a"
+        },
+        {
+            "question": "Which of the following is an example of ethical behavior in media?",
+            "options": {
+                "a": "Engaging in clickbait tactics for higher website traffic",
+                "b": "Manipulating images to enhance visual impact",
+                "c": "Seeking multiple perspectives for a balanced news report",
+                "d": "All of the above"
+            },
+            "answer": "c"
+        },
+        {
+            "question": "What is the principle of minimizing harm in media ethics?",
+            "options": {
+                "a": "Avoiding the use of explicit or graphic content",
+                "b": "Promoting sensationalism for higher audience engagement",
+                "c": "Prioritizing the interests of advertisers over the audience",
+                "d": "Ignoring potential emotional or psychological impacts on the audience"
+            },
+            "answer": "a"
+        }
+    ]
 }

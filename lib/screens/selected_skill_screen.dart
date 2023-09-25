@@ -3,7 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ywda/models/skill_development_model.dart';
+import 'package:ywda/screens/answer_quiz_screen.dart';
 import 'package:ywda/screens/selected_subskill_screen.dart';
+import 'package:ywda/screens/submitted_quiz_result_screen.dart';
 import 'package:ywda/screens/submitted_subskill_result_screen.dart';
 
 class SelectedSkillScreen extends StatefulWidget {
@@ -139,20 +141,39 @@ class _SelectedSkillScreenState extends State<SelectedSkillScreen> {
                                                                   dynamic>)
                                                           .containsKey(subskill
                                                               .subSkillName)) {
-                                                    return SubmittesSubskillResultScreen(
-                                                        thisSubskill: subskill,
-                                                        submittedSubskill:
-                                                            developedSkills[widget
-                                                                    .selectedSkill
-                                                                    .skillName][
-                                                                subskill
-                                                                    .subSkillName]);
+                                                    if (subskill
+                                                            .requiredTaskType ==
+                                                        TaskType.QUIZ) {
+                                                      return SubmittedQuizResultScreen(
+                                                          selectedSkill: widget
+                                                              .selectedSkill,
+                                                          selectedSubskill:
+                                                              subskill);
+                                                    } else {
+                                                      return SubmittesSubskillResultScreen(
+                                                          thisSubskill:
+                                                              subskill,
+                                                          submittedSubskill:
+                                                              developedSkills[widget
+                                                                      .selectedSkill
+                                                                      .skillName]
+                                                                  [subskill
+                                                                      .subSkillName]);
+                                                    }
                                                   } else {
-                                                    return SelectedSubskillScreen(
-                                                        selectedSkill: widget
-                                                            .selectedSkill,
-                                                        selectedSubskill:
-                                                            subskill);
+                                                    return subskill
+                                                                .requiredTaskType ==
+                                                            TaskType.QUIZ
+                                                        ? AnswerQuizScreen(
+                                                            selectedSkill: widget
+                                                                .selectedSkill,
+                                                            selectedSubskill:
+                                                                subskill)
+                                                        : SelectedSubskillScreen(
+                                                            selectedSkill: widget
+                                                                .selectedSkill,
+                                                            selectedSubskill:
+                                                                subskill);
                                                   }
                                                 }));
                                               },
