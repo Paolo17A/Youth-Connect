@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:ywda/screens/all_events_screen.dart';
 import 'package:ywda/screens/all_organizations_screen.dart';
+import 'package:ywda/screens/forgot_password_screen.dart';
 import 'package:ywda/screens/home_screen.dart';
 import 'package:ywda/screens/login_screen.dart';
 import 'package:ywda/screens/register_screen.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
     '/': (context) => const WelcomeScreen(),
     '/login': (context) => const LoginScreen(),
     '/signup': (context) => const SignUpScreen(),
+    '/forgot': (context) => const ForgotPasswordScreen(),
     '/register': (context) => const RegisterScreen(),
     '/home': (context) => const HomeScreen(),
     '/assessment': (context) => const SelfAssessmentScreen(),

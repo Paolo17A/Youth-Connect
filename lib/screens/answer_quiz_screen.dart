@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ywda/models/skill_development_model.dart';
-import 'package:ywda/screens/selected_skill_screen.dart';
+import 'package:ywda/screens/submitted_quiz_result_screen.dart';
 
 import '../widgets/answer_button.dart';
 
@@ -160,10 +160,10 @@ class _AnswerQuizScreenState extends State<AnswerQuizScreen> {
 
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Successfully processed quiz results!')));
-      Navigator.of(context).pop();
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) =>
-              SelectedSkillScreen(selectedSkill: widget.selectedSkill)));
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => SubmittedQuizResultScreen(
+              selectedSkill: widget.selectedSkill,
+              selectedSubskill: widget.selectedSubskill)));
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error processing quiz results: $error')));

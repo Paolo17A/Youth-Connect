@@ -38,12 +38,42 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         _isLoading = true;
       });
-      //  sign in using the email and password
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _emailAddressController.text,
-          password: _passwordController.text);
+      //  Attempt log-in with username
+      if (!_emailAddressController.text.contains('@') &&
+          !_emailAddressController.text.contains('.com')) {
+        final allUsers = await FirebaseFirestore.instance
+            .collection('users')
+            .where('username', isNull: false)
+            .where('username', isEqualTo: _emailAddressController.text)
+            .get();
 
-//  get the currentUserData
+        //  We found a user. We will log in using that email address.
+        if (allUsers.docs.isNotEmpty) {
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+              email: allUsers.docs.first.data()['email'],
+              password: _passwordController.text);
+        }
+        //  Username does not exist.
+        else {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(
+                  'No account with username \'${_emailAddressController.text}\' found.')));
+          setState(() {
+            _isLoading = false;
+            _emailAddressController.clear();
+            _passwordController.clear();
+          });
+          return;
+        }
+      }
+      //  Sign in using the email and password
+      else {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: _emailAddressController.text,
+            password: _passwordController.text);
+      }
+
+      //  Get the currentUserData
       final currentUserData = await FirebaseFirestore.instance
           .collection('users')
           .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -98,7 +128,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: customTextField(
-                            'Email Address',
+                            'Username or Email',
                             _emailAddressController,
                             TextInputType.emailAddress),
                       ),
@@ -124,7 +154,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.25,
                                 child: TextButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .pushNamed('/forgot');
+                                    },
                                     child: Text(
                                       'Click Here',
                                       textAlign: TextAlign.center,

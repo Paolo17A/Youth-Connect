@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
+import 'package:ywda/screens/view_article_screen.dart';
 import 'package:ywda/utils/quit_dialogue_util.dart';
 import 'package:ywda/widgets/app_bottom_navbar_widget.dart';
 
@@ -78,6 +79,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                         onTap: () {
                                           print(
                                               'Selected ${articles[index]['articleTitle']}');
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ViewArticleScreen(
+                                                          article: articles[
+                                                              index])));
                                         },
                                         child: Padding(
                                           padding: const EdgeInsets.all(10),
