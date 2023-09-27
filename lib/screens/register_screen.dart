@@ -153,7 +153,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         'SINGLE',
                         'MARRIED',
                         'DIVORCED',
-                        'SINGLE-PARENTS' 'WIDOWED',
+                        'SINGLE-PARENTS',
+                        'WIDOWED',
                         'SEPARATE'
                       ], 'Civil Status', false),
                       Padding(
