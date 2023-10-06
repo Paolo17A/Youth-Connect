@@ -21,12 +21,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
   DateTime? _selectedDate;
   int? age;
   final TextEditingController _cityController = TextEditingController();
+  final TextEditingController _specialGenderController =
+      TextEditingController();
 
   @override
   void dispose() {
     super.dispose();
     _fullNameController.dispose();
     _cityController.dispose();
+    _specialGenderController.dispose();
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -71,10 +74,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return;
     }
 
+    if (_gender == 'LET ME TYPE...' && _specialGenderController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Please indicate your specific gender')));
+      return;
+    }
+
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => RegisterSecondPageScreen(
             fullName: _fullNameController.text,
-            gender: _gender,
+            gender: _gender == 'LET ME TYPE...'
+                ? _specialGenderController.text.trim()
+                : _gender,
             civilStatus: _civilStatus,
             birthday: _selectedDate!,
             city: _cityController.text)));
@@ -141,8 +152,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         'NON-BINARY',
                         'TRANSGENDER',
                         'INTERSEX',
+                        'LET ME TYPE...',
                         'PREFER NOT TO SAY'
                       ], 'Gender', false),
+                      if (_gender == 'LET ME TYPE...')
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 5),
+                                child: Row(
+                                  children: [
+                                    Text('Indicate Your Gender'),
+                                  ],
+                                ),
+                              ),
+                              customTextField('Gender',
+                                  _specialGenderController, TextInputType.text),
+                            ],
+                          ),
+                        ),
                       dropdownWidget(_civilStatus, (selected) {
                         setState(() {
                           if (selected != null) {
