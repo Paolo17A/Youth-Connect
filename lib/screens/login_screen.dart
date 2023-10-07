@@ -79,6 +79,24 @@ class _LoginScreenState extends State<LoginScreen> {
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .get();
 
+      //  Check if the account has a userType parameter and create it if it doesn't.
+      if (!currentUserData.data()!.containsKey('userType')) {
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .update({'userType': 'CLIENT'});
+
+        //  If the current user is an admin, display a mesaage.
+      } else if (currentUserData.data()!['userType'] == 'ADMIN') {
+        scaffoldState.showSnackBar(
+            SnackBar(content: Text('Only clients may access this app')));
+        await FirebaseAuth.instance.signOut();
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
+
       if (currentUserData.data()!['accountInitialized'] == true) {
         navigatorState.pushReplacementNamed('/home');
       } else {

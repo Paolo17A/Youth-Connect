@@ -91,6 +91,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           .collection('users')
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .set({
+        'userType': 'CLIENT',
         'username': _usernameController.text,
         'email': _emailAddressController.text,
         'password': _passwordController.text,
@@ -103,7 +104,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         'orgPosition': '',
         'orgStatus': '',
         'school': '',
-        'skillsDeveloped': {}
+        'skillsDeveloped': {},
+        'selfIdentification': {}
       });
 
       //  Send email verification link to user's email.
