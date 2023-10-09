@@ -86,6 +86,7 @@ class _RegisterSecondPageScreenState extends State<RegisterSecondPageScreen> {
         'gender': widget.gender,
         'civilStatus': widget.civilStatus,
         'birthday': widget.birthday,
+        'city': widget.city,
         'category': _selectedCategory,
         'organization': _selectedOrg,
         'orgPosition': _positionController.text,

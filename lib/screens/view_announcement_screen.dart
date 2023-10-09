@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ViewArticleScreen extends StatelessWidget {
-  final dynamic article;
-  const ViewArticleScreen({super.key, required this.article});
+class ViewAnnouncementScreen extends StatelessWidget {
+  final dynamic announcement;
+  const ViewAnnouncementScreen({super.key, required this.announcement});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: Text(article['articleTitle'],
+            title: Text(announcement['title'],
                 style: GoogleFonts.poppins(
                     textStyle: TextStyle(fontWeight: FontWeight.bold)))),
         body: Padding(
@@ -25,7 +25,7 @@ class ViewArticleScreen extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Center(
-                    child: Text(article['articleTitle'],
+                    child: Text(announcement['title'],
                         overflow: TextOverflow.ellipsis,
                         maxLines: 3,
                         style: GoogleFonts.poppins(
@@ -45,11 +45,11 @@ class ViewArticleScreen extends StatelessWidget {
                     color: Colors.white),
                 child: Padding(
                   padding: const EdgeInsets.all(15),
-                  child: Text(article['articleContent'],
+                  child: Text(announcement['content'],
                       style: GoogleFonts.poppins()),
                 ),
               ),
-              if ((article['imageURLs'] as List<dynamic>).isNotEmpty)
+              if ((announcement['imageURLs'] as List<dynamic>).isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
@@ -60,10 +60,10 @@ class ViewArticleScreen extends StatelessWidget {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount:
-                            (article['imageURLs'] as List<dynamic>).length,
+                            (announcement['imageURLs'] as List<dynamic>).length,
                         itemBuilder: (context, index) {
                           List<dynamic> images =
-                              (article['imageURLs'] as List<dynamic>);
+                              (announcement['imageURLs'] as List<dynamic>);
                           return Container(
                               color: Colors.black,
                               child: Image.network(images[index]));
