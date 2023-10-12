@@ -133,21 +133,31 @@ class _AnswerQuizScreenState extends State<AnswerQuizScreen> {
 
       Map<dynamic, dynamic> skillsDeveloped =
           currentUserData.data()!['skillsDeveloped'];
+      int badgeLevel = 0;
+      if (countCorrectAnswers() == 6 || countCorrectAnswers() == 7) {
+        badgeLevel = 1;
+      } else if (countCorrectAnswers() == 8 || countCorrectAnswers() == 9) {
+        badgeLevel = 2;
+      } else {
+        badgeLevel = 3;
+      }
 
       if (skillsDeveloped.containsKey(widget.selectedSkill.skillName)) {
         skillsDeveloped[widget.selectedSkill.skillName]
             [widget.selectedSubskill.subSkillName] = {
           'status': 'GRADED',
-          'grade': countCorrectAnswers(),
-          "answers": selectedAnswers,
+          'grade': badgeLevel,
+          'score': countCorrectAnswers(),
+          'answers': selectedAnswers,
           'remarks': ''
         };
       } else {
         skillsDeveloped[widget.selectedSkill.skillName] = {
           widget.selectedSubskill.subSkillName: {
             'status': 'GRADED',
-            'grade': countCorrectAnswers(),
-            "answers": selectedAnswers,
+            'grade': badgeLevel,
+            'score': countCorrectAnswers(),
+            'answers': selectedAnswers,
             'remarks': ''
           }
         };

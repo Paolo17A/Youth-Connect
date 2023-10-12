@@ -1,10 +1,12 @@
 class SkillDevelopmentModel {
   String skillName;
   String assetPath;
+  int badgeQuota;
   List<SubSkillModel> subSkills;
   SkillDevelopmentModel(
       {required this.skillName,
       required this.assetPath,
+      required this.badgeQuota,
       required this.subSkills});
 }
 
@@ -26,6 +28,7 @@ List<SkillDevelopmentModel> allSkillDevelopment = [
   SkillDevelopmentModel(
       skillName: 'Leadership and Communication',
       assetPath: 'lib/assets/images/icons/icons-leadership.png',
+      badgeQuota: 0,
       subSkills: [
         SubSkillModel(
             subSkillName: 'Effective Communication',
@@ -49,6 +52,7 @@ List<SkillDevelopmentModel> allSkillDevelopment = [
   SkillDevelopmentModel(
       skillName: 'Personal Development',
       assetPath: '',
+      badgeQuota: 0,
       subSkills: [
         SubSkillModel(
             subSkillName: 'Time Management',
@@ -69,6 +73,7 @@ List<SkillDevelopmentModel> allSkillDevelopment = [
   SkillDevelopmentModel(
       skillName: 'Creativity and Innovation',
       assetPath: 'lib/assets/images/icons/icons-creativity.png',
+      badgeQuota: 0,
       subSkills: [
         SubSkillModel(
             subSkillName: 'Critical Thinking',
@@ -89,6 +94,7 @@ List<SkillDevelopmentModel> allSkillDevelopment = [
   SkillDevelopmentModel(
       skillName: 'Career Readiness',
       assetPath: 'lib/assets/images/icons/icons-career.png',
+      badgeQuota: 20,
       subSkills: [
         SubSkillModel(
             subSkillName: 'Resume Writing',
@@ -109,6 +115,7 @@ List<SkillDevelopmentModel> allSkillDevelopment = [
   SkillDevelopmentModel(
       skillName: 'Digital Literacy',
       assetPath: 'lib/assets/images/icons/icons-digital.png',
+      badgeQuota: 24,
       subSkills: [
         SubSkillModel(
             subSkillName: 'Basic Computer Skills',
@@ -129,6 +136,7 @@ List<SkillDevelopmentModel> allSkillDevelopment = [
   SkillDevelopmentModel(
       skillName: 'Health and Well-being',
       assetPath: 'lib/assets/images/icons/icons-health.png',
+      badgeQuota: 28,
       subSkills: [
         SubSkillModel(
             subSkillName: 'Physical Fitness',
@@ -149,6 +157,7 @@ List<SkillDevelopmentModel> allSkillDevelopment = [
   SkillDevelopmentModel(
       skillName: 'Environmental Awareness',
       assetPath: 'lib/assets/images/icons/icons-environmental.png',
+      badgeQuota: 32,
       subSkills: [
         SubSkillModel(
             subSkillName: 'Sustainability Practices',
@@ -169,6 +178,7 @@ List<SkillDevelopmentModel> allSkillDevelopment = [
   SkillDevelopmentModel(
       skillName: 'Civic Engagement',
       assetPath: '',
+      badgeQuota: 36,
       subSkills: [
         SubSkillModel(
             subSkillName: 'Community Service',
@@ -189,6 +199,7 @@ List<SkillDevelopmentModel> allSkillDevelopment = [
   SkillDevelopmentModel(
       skillName: 'Cultural Appreciation',
       assetPath: '',
+      badgeQuota: 40,
       subSkills: [
         SubSkillModel(
             subSkillName: 'History and Heritage',
@@ -206,26 +217,31 @@ List<SkillDevelopmentModel> allSkillDevelopment = [
             taskName: '',
             taskDescription: '')
       ]),
-  SkillDevelopmentModel(skillName: 'Tech Skills', assetPath: '', subSkills: [
-    SubSkillModel(
-        subSkillName: 'Coding Basics',
-        requiredTaskType: TaskType.QUIZ,
-        taskName: '',
-        taskDescription: ''),
-    SubSkillModel(
-        subSkillName: 'Graphic Design',
-        requiredTaskType: TaskType.ESSAY,
-        taskName: '',
-        taskDescription: ''),
-    SubSkillModel(
-        subSkillName: 'Video Editing',
-        requiredTaskType: TaskType.QUIZ,
-        taskName: '',
-        taskDescription: '')
-  ]),
+  SkillDevelopmentModel(
+      skillName: 'Tech Skills',
+      assetPath: '',
+      badgeQuota: 44,
+      subSkills: [
+        SubSkillModel(
+            subSkillName: 'Coding Basics',
+            requiredTaskType: TaskType.QUIZ,
+            taskName: '',
+            taskDescription: ''),
+        SubSkillModel(
+            subSkillName: 'Graphic Design',
+            requiredTaskType: TaskType.ESSAY,
+            taskName: '',
+            taskDescription: ''),
+        SubSkillModel(
+            subSkillName: 'Video Editing',
+            requiredTaskType: TaskType.QUIZ,
+            taskName: '',
+            taskDescription: '')
+      ]),
   SkillDevelopmentModel(
       skillName: 'Language Learning',
       assetPath: '',
+      badgeQuota: 47,
       subSkills: [
         SubSkillModel(
             subSkillName: 'Learning a New Language',
@@ -246,6 +262,7 @@ List<SkillDevelopmentModel> allSkillDevelopment = [
   SkillDevelopmentModel(
       skillName: 'Entrepreneurship',
       assetPath: '',
+      badgeQuota: 50,
       subSkills: [
         SubSkillModel(
             subSkillName: 'Business Planning',

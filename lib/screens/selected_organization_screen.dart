@@ -22,17 +22,26 @@ class SelectedOrganizationScreen extends StatelessWidget {
                   height: 180,
                   child: Stack(
                     children: [
-                      Container(
-                        height: 160,
-                        color: Colors.amber,
-                        child: Center(
-                            child: Text(
-                          'INSERT COVER PHOTO HERE',
-                          style: GoogleFonts.poppins(
-                              textStyle:
-                                  const TextStyle(fontWeight: FontWeight.bold)),
-                        )),
-                      ),
+                      selectedOrg.coverURL.isNotEmpty
+                          ? Container(
+                              width: double.infinity,
+                              height: 160,
+                              color: Colors.white,
+                              child: Image.network(
+                                selectedOrg.coverURL,
+                                fit: BoxFit.cover,
+                              ))
+                          : Container(
+                              height: 160,
+                              color: Colors.white,
+                              child: Center(
+                                  child: Text(
+                                'NO COVER PHOTO AVAILABLE',
+                                style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
+                                        fontWeight: FontWeight.bold)),
+                              )),
+                            ),
                       Positioned(
                         top: 80,
                         left: 10,
@@ -43,7 +52,7 @@ class SelectedOrganizationScreen extends StatelessWidget {
                               borderRadius:
                                   BorderRadiusDirectional.circular(90),
                               child: selectedOrg.logoURL.isNotEmpty
-                                  ? Image.asset(selectedOrg.logoURL)
+                                  ? Image.network(selectedOrg.logoURL)
                                   : Container(
                                       color: Colors.white,
                                       child: Center(

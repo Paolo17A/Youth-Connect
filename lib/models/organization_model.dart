@@ -5,6 +5,7 @@ class OrganizationModel {
   String intro;
   String socMed;
   String logoURL;
+  String coverURL;
 
   OrganizationModel(
       {required this.name,
@@ -12,7 +13,8 @@ class OrganizationModel {
       required this.contactDetails,
       required this.intro,
       required this.socMed,
-      this.logoURL = ''});
+      this.logoURL = '',
+      this.coverURL = ''});
 }
 
 List<OrganizationModel> allOrganizations = [

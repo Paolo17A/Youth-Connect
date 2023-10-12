@@ -63,7 +63,7 @@ class _SelectedSubskillScreenState extends State<SelectedSubskillScreen> {
         skillsDeveloped[widget.selectedSkill.skillName]
             [widget.selectedSubskill.subSkillName] = {
           'status': 'PENDING',
-          'grade': 0.0,
+          'grade': 0,
           'videoTitle': _titleController.text.trim(),
           'videoURL': _urlController.text.trim(),
           'remarks': ''
@@ -72,7 +72,7 @@ class _SelectedSubskillScreenState extends State<SelectedSubskillScreen> {
         skillsDeveloped[widget.selectedSkill.skillName] = {
           widget.selectedSubskill.subSkillName: {
             'status': 'PENDING',
-            'grade': 0.0,
+            'grade': 0,
             'videoTitle': _titleController.text.trim(),
             'videoURL': _urlController.text.trim(),
             'remarks': ''

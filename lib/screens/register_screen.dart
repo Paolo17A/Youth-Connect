@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:ywda/screens/register_second_page_screen.dart';
 import 'package:ywda/widgets/bordered_text_container_widgert.dart';
+import 'package:ywda/widgets/custom_buttons_widgets.dart';
 import 'package:ywda/widgets/dropdown_widget.dart';
 
 import '../widgets/custom_textfield_widget.dart';
@@ -240,33 +241,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                       ),
                       const SizedBox(height: 50),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            SizedBox(
-                              height: 40,
-                              width: 120,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        const Color.fromARGB(255, 34, 52, 189),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(15))),
-                                onPressed: _submitInput,
-                                child: Text('NEXT',
-                                    style: GoogleFonts.poppins(
-                                        textStyle: const TextStyle(
-                                            fontWeight: FontWeight.w700,
-                                            color: Colors.white,
-                                            fontSize: 14))),
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
+                      registerSubmitButton(() {
+                        _submitInput();
+                      })
                     ],
                   ),
                 ),

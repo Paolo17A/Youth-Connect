@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ywda/widgets/custom_styling_widgets.dart';
 import 'package:ywda/widgets/custom_textfield_widget.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -143,19 +144,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                     fontSize: 32,
                                     fontWeight: FontWeight.w600))),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: customTextField(
-                            'Username or Email',
-                            _emailAddressController,
-                            TextInputType.emailAddress),
-                      ),
+                      allPadding8Pix(customTextField('Username or Email',
+                          _emailAddressController, TextInputType.emailAddress)),
                       const SizedBox(height: 10),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: customTextField('Password', _passwordController,
-                            TextInputType.visiblePassword),
-                      ),
+                      allPadding8Pix(customTextField('Password',
+                          _passwordController, TextInputType.visiblePassword)),
                       Padding(
                           padding: const EdgeInsets.all(13),
                           child: Row(

@@ -16,14 +16,15 @@ class SkillsDevelopmentScreen extends StatefulWidget {
 
 class _SkillsDevelopmentScreenState extends State<SkillsDevelopmentScreen> {
   bool _isLoading = true;
-  Map developedSkills = {};
+  Map<dynamic, dynamic> developedSkills = {};
+  int badgeCount = 0;
   @override
   void initState() {
     super.initState();
     getUserData();
   }
 
-  void getUserData() async {
+  Future getUserData() async {
     try {
       final currentUserData = await FirebaseFirestore.instance
           .collection('users')
@@ -31,7 +32,14 @@ class _SkillsDevelopmentScreenState extends State<SkillsDevelopmentScreen> {
           .get();
 
       developedSkills = currentUserData.data()!['skillsDeveloped'];
-
+      for (String skillKey in developedSkills.keys) {
+        Map<dynamic, dynamic> skills = developedSkills[skillKey];
+        for (String subSkillKey in skills.keys) {
+          Map<dynamic, dynamic> subskills = skills[subSkillKey];
+          badgeCount += subskills['grade'] as int;
+        }
+      }
+      print('BADGES: $badgeCount');
       setState(() {
         _isLoading = false;
       });
@@ -61,51 +69,55 @@ class _SkillsDevelopmentScreenState extends State<SkillsDevelopmentScreen> {
                     shrinkWrap: true,
                     itemCount: allSkillDevelopment.length,
                     itemBuilder: (context, index) {
-                      return Padding(
-                          padding: EdgeInsets.all(5),
-                          child: Container(
-                            height: 100,
-                            width: MediaQuery.of(context).size.width * 0.9,
-                            child: ElevatedButton(
-                                onPressed: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => SelectedSkillScreen(
-                                          selectedSkill:
-                                              allSkillDevelopment[index])));
-                                },
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.white),
-                                child: Row(children: [
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.09,
-                                    child: allSkillDevelopment[index]
-                                            .assetPath
-                                            .isNotEmpty
-                                        ? Image.asset(
-                                            allSkillDevelopment[index]
-                                                .assetPath,
-                                            scale: .25,
-                                          )
-                                        : Icon(Icons.star, color: Colors.black),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 15),
-                                    child: SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.6,
-                                      child: Text(
-                                          allSkillDevelopment[index].skillName,
-                                          style: GoogleFonts.poppins(
-                                              textStyle: TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 17))),
-                                    ),
-                                  )
-                                ])),
-                          ));
+                      return _skillToDevelopButton(index);
                     })));
+  }
+
+  Widget _skillToDevelopButton(int index) {
+    return Padding(
+        padding: EdgeInsets.all(5),
+        child: Container(
+          height: 100,
+          width: MediaQuery.of(context).size.width * 0.9,
+          child: ElevatedButton(
+              onPressed: badgeCount >= allSkillDevelopment[index].badgeQuota
+                  ? () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => SelectedSkillScreen(
+                              selectedSkill: allSkillDevelopment[index])));
+                    }
+                  : null,
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  disabledBackgroundColor: Colors.white.withOpacity(0.5)),
+              child: Opacity(
+                opacity: badgeCount >= allSkillDevelopment[index].badgeQuota
+                    ? 1
+                    : 0.25,
+                child: Row(children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.09,
+                    child: allSkillDevelopment[index].assetPath.isNotEmpty
+                        ? Image.asset(
+                            allSkillDevelopment[index].assetPath,
+                            scale: .25,
+                          )
+                        : Icon(Icons.star, color: Colors.black),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      child: Text(allSkillDevelopment[index].skillName,
+                          style: GoogleFonts.poppins(
+                              textStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17))),
+                    ),
+                  )
+                ]),
+              )),
+        ));
   }
 }

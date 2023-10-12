@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:ywda/utils/custom_styling_util.dart';
+import 'package:ywda/widgets/custom_styling_widgets.dart';
 
 import '../widgets/app_bottom_navbar_widget.dart';
 

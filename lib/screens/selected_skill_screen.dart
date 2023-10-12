@@ -7,6 +7,7 @@ import 'package:ywda/screens/answer_quiz_screen.dart';
 import 'package:ywda/screens/selected_subskill_screen.dart';
 import 'package:ywda/screens/submitted_quiz_result_screen.dart';
 import 'package:ywda/screens/submitted_subskill_result_screen.dart';
+import 'package:ywda/widgets/custom_styling_widgets.dart';
 
 class SelectedSkillScreen extends StatefulWidget {
   final SkillDevelopmentModel selectedSkill;
@@ -90,16 +91,7 @@ class _SelectedSkillScreenState extends State<SelectedSkillScreen> {
                             child: Container(
                               width: MediaQuery.of(context).size.width * 0.85,
                               height: 150,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.black.withOpacity(0.3),
-                                        blurRadius: 5,
-                                        spreadRadius: 2,
-                                        offset: Offset(0, 5))
-                                  ],
-                                  borderRadius: BorderRadius.circular(20)),
+                              decoration: decorationWithShadow(),
                               child: Padding(
                                 padding: const EdgeInsets.all(16),
                                 child: Column(
@@ -120,73 +112,7 @@ class _SelectedSkillScreenState extends State<SelectedSkillScreen> {
                                                           FontWeight.bold,
                                                       fontSize: 20))),
                                         ),
-                                        SizedBox(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.2,
-                                          child: ElevatedButton(
-                                              onPressed: () {
-                                                Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                        builder: (context) {
-                                                  if (developedSkills
-                                                          .containsKey(widget
-                                                              .selectedSkill
-                                                              .skillName) &&
-                                                      (developedSkills[widget
-                                                                  .selectedSkill
-                                                                  .skillName]
-                                                              as Map<dynamic,
-                                                                  dynamic>)
-                                                          .containsKey(subskill
-                                                              .subSkillName)) {
-                                                    if (subskill
-                                                            .requiredTaskType ==
-                                                        TaskType.QUIZ) {
-                                                      return SubmittedQuizResultScreen(
-                                                          selectedSkill: widget
-                                                              .selectedSkill,
-                                                          selectedSubskill:
-                                                              subskill);
-                                                    } else {
-                                                      return SubmittesSubskillResultScreen(
-                                                          thisSubskill:
-                                                              subskill,
-                                                          submittedSubskill:
-                                                              developedSkills[widget
-                                                                      .selectedSkill
-                                                                      .skillName]
-                                                                  [subskill
-                                                                      .subSkillName]);
-                                                    }
-                                                  } else {
-                                                    return subskill
-                                                                .requiredTaskType ==
-                                                            TaskType.QUIZ
-                                                        ? AnswerQuizScreen(
-                                                            selectedSkill: widget
-                                                                .selectedSkill,
-                                                            selectedSubskill:
-                                                                subskill)
-                                                        : SelectedSubskillScreen(
-                                                            selectedSkill: widget
-                                                                .selectedSkill,
-                                                            selectedSubskill:
-                                                                subskill);
-                                                  }
-                                                }));
-                                              },
-                                              style: ElevatedButton.styleFrom(
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              30))),
-                                              child: Text('Start',
-                                                  style: GoogleFonts.poppins(
-                                                      fontWeight:
-                                                          FontWeight.bold))),
-                                        )
+                                        _subskillActionButton(subskill)
                                       ],
                                     ),
                                   ],
@@ -198,6 +124,58 @@ class _SelectedSkillScreenState extends State<SelectedSkillScreen> {
                       ),
                     ),
                   ))),
+    );
+  }
+
+  Widget _subskillActionButton(SubSkillModel subskill) {
+    bool hasSubskillEntry =
+        developedSkills.containsKey(widget.selectedSkill.skillName) &&
+            (developedSkills[widget.selectedSkill.skillName]
+                    as Map<dynamic, dynamic>)
+                .containsKey(subskill.subSkillName);
+
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.2,
+      child: ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+              //  Already did the task for this subskill
+              if (hasSubskillEntry) {
+                //  Task is a Quiz
+                if (subskill.requiredTaskType == TaskType.QUIZ) {
+                  return SubmittedQuizResultScreen(
+                      selectedSkill: widget.selectedSkill,
+                      selectedSubskill: subskill);
+                }
+                //  Task is either a video or an essay
+                else {
+                  return SubmittesSubskillResultScreen(
+                      thisSkill: widget.selectedSkill,
+                      thisSubskill: subskill,
+                      submittedSubskill:
+                          developedSkills[widget.selectedSkill.skillName]
+                              [subskill.subSkillName],
+                      remarks: developedSkills[widget.selectedSkill.skillName]
+                          [subskill.subSkillName]['remarks']);
+                }
+              } else {
+                return subskill.requiredTaskType == TaskType.QUIZ
+                    ? AnswerQuizScreen(
+                        selectedSkill: widget.selectedSkill,
+                        selectedSubskill: subskill)
+                    : SelectedSubskillScreen(
+                        selectedSkill: widget.selectedSkill,
+                        selectedSubskill: subskill);
+              }
+            }));
+          },
+          style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30))),
+          child: Text(hasSubskillEntry ? 'Results' : 'Start',
+              style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.bold,
+                  fontSize: hasSubskillEntry ? 11 : 16))),
     );
   }
 }

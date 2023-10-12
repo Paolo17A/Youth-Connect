@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ywda/screens/selected_organization_screen.dart';
@@ -15,14 +16,18 @@ class AllOrganizationsScreen extends StatefulWidget {
 
 class _AllOrganizationsScreenState extends State<AllOrganizationsScreen> {
   //String? _selectedOrg = '';
+  bool _isLoading = true;
 
   final TextEditingController _searchController = TextEditingController();
-  List<OrganizationModel> filteredOrganizations = List.from(allOrganizations);
+  List<OrganizationModel> allNetworkOrgs = [];
+  List<OrganizationModel> filteredNetworkOrgs = [];
+  //List<OrganizationModel> filteredOrganizations = List.from(allOrganizations);
 
   @override
   void initState() {
     super.initState();
     _searchController.addListener(_onSearchChanged);
+    getAllOrgs();
   }
 
   @override
@@ -32,15 +37,38 @@ class _AllOrganizationsScreenState extends State<AllOrganizationsScreen> {
   }
 
   void _onSearchChanged() {
-    print('typing');
     final searchText = _searchController.text.toLowerCase().trim();
     setState(() {
-      filteredOrganizations = allOrganizations.where((org) {
+      filteredNetworkOrgs = allNetworkOrgs.where((org) {
         final name = org.name.toLowerCase().trim();
         return name.contains(searchText);
       }).toList();
     });
-    print('orgs found: ${filteredOrganizations.length}');
+  }
+
+  Future getAllOrgs() async {
+    try {
+      final orgs = await FirebaseFirestore.instance.collection('orgs').get();
+      final allOrgs = orgs.docs;
+      for (var org in allOrgs) {
+        Map<dynamic, dynamic> orgData = org.data();
+        allNetworkOrgs.add(OrganizationModel(
+            name: orgData['name'],
+            nature: orgData['nature'],
+            contactDetails: orgData['contactDetails'],
+            intro: orgData['intro'],
+            socMed: orgData['socMed'],
+            logoURL: orgData['logoURL'],
+            coverURL: orgData['coverURL']));
+      }
+      setState(() {
+        filteredNetworkOrgs = List.from(allNetworkOrgs);
+        _isLoading = false;
+      });
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error getting all orgs: $error')));
+    }
   }
 
   @override
@@ -55,28 +83,30 @@ class _AllOrganizationsScreenState extends State<AllOrganizationsScreen> {
           body: GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: SafeArea(
-              child: Column(children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: customTextField(
-                      'Search', _searchController, TextInputType.name),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: filteredOrganizations.length,
-                      itemBuilder: (context, index) {
-                        return _organizationButton(
-                            filteredOrganizations[index]);
-                      }),
-                )
-              ]),
+              child: _isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : Column(children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: customTextField(
+                            'Search', _searchController, TextInputType.name),
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: filteredNetworkOrgs.length,
+                            itemBuilder: (context, index) {
+                              return _networkedOrganizationButton(
+                                  filteredNetworkOrgs[index]);
+                            }),
+                      )
+                    ]),
             ),
           )),
     );
   }
 
-  Widget _organizationButton(OrganizationModel displayedOrg) {
+  Widget _networkedOrganizationButton(OrganizationModel networkedOrg) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Stack(
@@ -95,11 +125,11 @@ class _AllOrganizationsScreenState extends State<AllOrganizationsScreen> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => SelectedOrganizationScreen(
-                                  selectedOrg: displayedOrg)));
+                                  selectedOrg: networkedOrg)));
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(left: 32),
-                      child: Text(displayedOrg.name,
+                      child: Text(networkedOrg.name,
                           textAlign: TextAlign.center,
                           style: GoogleFonts.poppins(
                               textStyle: const TextStyle(
@@ -121,12 +151,12 @@ class _AllOrganizationsScreenState extends State<AllOrganizationsScreen> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => SelectedOrganizationScreen(
-                                  selectedOrg: displayedOrg)));
+                                  selectedOrg: networkedOrg)));
                     },
-                    child: displayedOrg.logoURL.isNotEmpty
+                    child: networkedOrg.logoURL.isNotEmpty
                         ? ClipRRect(
                             borderRadius: BorderRadiusDirectional.circular(45),
-                            child: Image.asset(displayedOrg.logoURL))
+                            child: Image.network(networkedOrg.logoURL))
                         : Text('NO IMAGE AVAILABLE',
                             textAlign: TextAlign.center,
                             style: GoogleFonts.poppins(color: Colors.black)))),

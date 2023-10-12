@@ -4,8 +4,16 @@ Padding horizontalPadding5pix(Widget child) {
   return Padding(padding: EdgeInsets.symmetric(horizontal: 5), child: child);
 }
 
+Padding horizontalPadding8Pix(Widget child) {
+  return Padding(padding: EdgeInsets.symmetric(horizontal: 8), child: child);
+}
+
 Padding allPadding4pix(Widget child) {
   return Padding(padding: EdgeInsets.all(4), child: child);
+}
+
+Padding allPadding8Pix(Widget child) {
+  return Padding(padding: EdgeInsets.all(8), child: child);
 }
 
 BoxDecoration decorationWithShadow() {

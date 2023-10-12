@@ -22,7 +22,7 @@ class _SubmittedQuizResultScreenState extends State<SubmittedQuizResultScreen> {
   bool _isLoading = true;
   List<dynamic> quizContent = [];
   List<dynamic> answers = [];
-  int grade = 0;
+  int score = 0;
   @override
   void initState() {
     super.initState();
@@ -45,8 +45,8 @@ class _SubmittedQuizResultScreenState extends State<SubmittedQuizResultScreen> {
           currentUserData.data()!['skillsDeveloped'];
       answers = skillsDeveloped[widget.selectedSkill.skillName]
           [widget.selectedSubskill.subSkillName]['answers'];
-      grade = skillsDeveloped[widget.selectedSkill.skillName]
-          [widget.selectedSubskill.subSkillName]['grade'];
+      score = skillsDeveloped[widget.selectedSkill.skillName]
+          [widget.selectedSubskill.subSkillName]['score'];
       setState(() {
         _isLoading = false;
       });
@@ -83,7 +83,7 @@ class _SubmittedQuizResultScreenState extends State<SubmittedQuizResultScreen> {
                       width: double.infinity,
                       child: Center(
                         child: Text(
-                          'You got ${grade.toString()} out of ${quizContent.length} questions correct',
+                          'You got ${score.toString()} out of ${quizContent.length} questions correct',
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                               fontWeight: FontWeight.bold,
