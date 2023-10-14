@@ -109,7 +109,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
         'selfIdentification': {},
         'skillsDeveloped': {},
         'surveyAnswers': {},
-        'profileImageURL': ''
+        'profileImageURL': '',
+        'genderDevelopment': {
+          'genderIdentity': {'M': 0, 'F': 0},
+          'genderExpression': {'M': 0, 'F': 0},
+          'biologicalSex': {'M': 0, 'F': 0},
+          'sexAttract': {'M': 0, 'F': 0},
+          'romanceAttract': {'M': 0, 'F': 0},
+        }
       });
 
       //  Send email verification link to user's email.

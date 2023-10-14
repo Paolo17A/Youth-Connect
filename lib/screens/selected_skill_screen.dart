@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:ywda/models/skill_development_model.dart';
 import 'package:ywda/screens/answer_quiz_screen.dart';
 import 'package:ywda/screens/selected_subskill_screen.dart';
+import 'package:ywda/screens/skill_leaderboard_screen.dart';
 import 'package:ywda/screens/submitted_quiz_result_screen.dart';
 import 'package:ywda/screens/submitted_subskill_result_screen.dart';
 import 'package:ywda/widgets/custom_styling_widgets.dart';
@@ -69,7 +70,11 @@ class _SelectedSkillScreenState extends State<SelectedSkillScreen> {
                 ),
               ),
               IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => SkillLeaderboardScreen(
+                            selectedSkill: widget.selectedSkill)));
+                  },
                   icon:
                       Image.asset('lib/assets/images/icons/icons-ranking.png'))
             ],

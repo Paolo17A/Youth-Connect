@@ -2,10 +2,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:ywda/screens/all_projects_screen.dart';
 import 'package:ywda/screens/all_organizations_screen.dart';
+import 'package:ywda/screens/edit_gender_screen.dart';
 import 'package:ywda/screens/edit_profile_screen.dart';
 import 'package:ywda/screens/forgot_password_screen.dart';
+import 'package:ywda/screens/gender_development_screen.dart';
 import 'package:ywda/screens/home_screen.dart';
 import 'package:ywda/screens/login_screen.dart';
+import 'package:ywda/screens/overall_leaderboard_screen.dart';
 import 'package:ywda/screens/register_screen.dart';
 import 'package:ywda/screens/self_assessment_screen.dart';
 import 'package:ywda/screens/self_identification_category_screen.dart';
@@ -41,7 +44,10 @@ class MyApp extends StatelessWidget {
     '/answerSurvey': (context) => const AnswerSurveyScreen(),
     '/selfIdentification': (context) => const SelfIdentificationScreen(),
     '/selfIdentificationCategory': (context) =>
-        const SelfIdentificationCategoryScreen()
+        const SelfIdentificationCategoryScreen(),
+    '/genderDevelopment': (context) => const GenderDevelopmentScreen(),
+    '/editGender': (context) => const EditGenderScreen(),
+    '/overallLeaderboard': (context) => const OverallLeaderboardScreen()
   };
 
   final ThemeData _themeData = ThemeData(

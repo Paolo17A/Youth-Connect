@@ -54,7 +54,7 @@ class SubmittesSubskillResultScreen extends StatelessWidget {
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
             ),
           ),
-          if (submittedSubskill['status'] == 'APPROVED')
+          if (submittedSubskill['status'] == 'GRADED')
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

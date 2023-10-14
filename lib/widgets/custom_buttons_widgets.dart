@@ -30,3 +30,24 @@ Widget registerSubmitButton(Function onPress) {
     ),
   );
 }
+
+Widget genderDevelopmentButton(String label, Function onPress) {
+  return ElevatedButton(
+      onPressed: () {
+        onPress();
+      },
+      style: ElevatedButton.styleFrom(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        child: Text(
+          label,
+          style: GoogleFonts.poppins(
+              textStyle: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25)),
+        ),
+      ));
+}

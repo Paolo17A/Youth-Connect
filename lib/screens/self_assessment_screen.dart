@@ -21,7 +21,9 @@ class SelfAssessmentScreen extends StatelessWidget {
               Transform.scale(
                 scale: 1.5,
                 child: IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/overallLeaderboard');
+                    },
                     icon: Image.asset(
                         'lib/assets/images/icons/icons-ranking.png')),
               )
@@ -44,8 +46,10 @@ class SelfAssessmentScreen extends StatelessWidget {
                           }),
                           _selfAssessmentButton(
                               'lib/assets/images/icons/Bread.png',
-                              'GENDER DEVELOPMENT',
-                              () {}),
+                              'GENDER DEVELOPMENT', () {
+                            Navigator.of(context)
+                                .pushNamed('/genderDevelopment');
+                          }),
                         ],
                       ),
                       Column(

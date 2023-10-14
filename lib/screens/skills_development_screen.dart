@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ywda/models/skill_development_model.dart';
 import 'package:ywda/screens/selected_skill_screen.dart';
+import 'package:ywda/utils/badge_couter_util.dart';
 import 'package:ywda/widgets/app_bottom_navbar_widget.dart';
 
 class SkillsDevelopmentScreen extends StatefulWidget {
@@ -32,14 +33,7 @@ class _SkillsDevelopmentScreenState extends State<SkillsDevelopmentScreen> {
           .get();
 
       developedSkills = currentUserData.data()!['skillsDeveloped'];
-      for (String skillKey in developedSkills.keys) {
-        Map<dynamic, dynamic> skills = developedSkills[skillKey];
-        for (String subSkillKey in skills.keys) {
-          Map<dynamic, dynamic> subskills = skills[subSkillKey];
-          badgeCount += subskills['grade'] as int;
-        }
-      }
-      print('BADGES: $badgeCount');
+      badgeCount = countAllBadges(developedSkills);
       setState(() {
         _isLoading = false;
       });
