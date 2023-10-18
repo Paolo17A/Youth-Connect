@@ -8,6 +8,7 @@ import 'package:ywda/screens/forgot_password_screen.dart';
 import 'package:ywda/screens/gender_development_screen.dart';
 import 'package:ywda/screens/home_screen.dart';
 import 'package:ywda/screens/login_screen.dart';
+import 'package:ywda/screens/mental_health_screen.dart';
 import 'package:ywda/screens/overall_leaderboard_screen.dart';
 import 'package:ywda/screens/register_screen.dart';
 import 'package:ywda/screens/self_assessment_screen.dart';
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
     '/home': (context) => const HomeScreen(),
     '/assessment': (context) => const SelfAssessmentScreen(),
     '/organization': (context) => const AllOrganizationsScreen(),
+    '/mentalHealth': (context) => const MentalHealthScreen(),
     '/events': (context) => const AllProjectsScreen(),
     '/profile': (context) => const UserProfileScreen(),
     '/edit': (context) => EditProfileScreen(),

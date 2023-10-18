@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../widgets/app_bottom_navbar_widget.dart';
 
 class SelfAssessmentScreen extends StatelessWidget {
@@ -58,17 +57,7 @@ class SelfAssessmentScreen extends StatelessWidget {
                           _selfAssessmentButton(
                               'lib/assets/images/icons/icons-brain.png',
                               'MENTAL HEALTH', () async {
-                            final url = Uri.parse(
-                                'https://play.google.com/store/apps/details?id=ph.gov.doh.lusogisip&hl=en&gl=US');
-                            if (await canLaunchUrl(url)) {
-                              await launchUrl(url);
-                            } else {
-                              // Handle the case where the URL cannot be launched
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content:
-                                          Text('Unable to open Play Store.')));
-                            }
+                            Navigator.of(context).pushNamed('/mentalHealth');
                           }),
                           _selfAssessmentButton(
                               'lib/assets/images/icons/Self Identification.png',
