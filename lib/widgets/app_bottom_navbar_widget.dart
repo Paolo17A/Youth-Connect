@@ -12,15 +12,12 @@ void _processPress(int selectedIndex, int currentIndex, BuildContext context) {
       Navigator.pushNamed(context, '/assessment');
       break;
     case 1:
-      Navigator.pushNamed(context, '/events');
-      break;
-    case 2:
       Navigator.popUntil(context, ModalRoute.withName('/home'));
       break;
-    case 3:
+    case 2:
       Navigator.pushNamed(context, '/organization');
       break;
-    case 4:
+    case 3:
       Navigator.pushNamed(context, '/profile');
       break;
   }
@@ -40,23 +37,23 @@ Widget bottomNavigationBar(BuildContext context, int index) {
             backgroundColor: bottomNavButtonColor,
             label: 'Self-Assessment'),
         //  Programs & Events
-        BottomNavigationBarItem(
+        /*BottomNavigationBarItem(
             icon: _buildIcon(Icons.event, index == 1),
             backgroundColor: bottomNavButtonColor,
-            label: 'Programs & Events'),
+            label: 'Programs & Events'),*/
         //  Home
         BottomNavigationBarItem(
-            icon: _buildIcon(Icons.home, index == 2),
+            icon: _buildIcon(Icons.home, index == 1),
             backgroundColor: bottomNavButtonColor,
             label: 'Home'),
         //  Organizations
         BottomNavigationBarItem(
-            icon: _buildIcon(Icons.people, index == 3),
+            icon: _buildIcon(Icons.people, index == 2),
             backgroundColor: bottomNavButtonColor,
             label: 'Organizations'),
         //  Profile
         BottomNavigationBarItem(
-            icon: _buildIcon(Icons.person, index == 4),
+            icon: _buildIcon(Icons.person, index == 3),
             backgroundColor: bottomNavButtonColor,
             label: 'Profie'),
       ],

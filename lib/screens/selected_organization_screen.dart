@@ -12,7 +12,7 @@ class SelectedOrganizationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text(selectedOrg.name)),
-        bottomNavigationBar: bottomNavigationBar(context, 3),
+        bottomNavigationBar: bottomNavigationBar(context, 2),
         body: Padding(
             padding: const EdgeInsets.all(5),
             child: Column(

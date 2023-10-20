@@ -79,7 +79,7 @@ class _AllOrganizationsScreenState extends State<AllOrganizationsScreen> {
         return false;
       },
       child: Scaffold(
-          bottomNavigationBar: bottomNavigationBar(context, 3),
+          bottomNavigationBar: bottomNavigationBar(context, 2),
           body: GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: SafeArea(

@@ -84,102 +84,109 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           return false;
         },
         child: Scaffold(
-          bottomNavigationBar: bottomNavigationBar(context, 4),
+          bottomNavigationBar: bottomNavigationBar(context, 3),
           body: SafeArea(
             child: _isLoading
                 ? const Center(child: CircularProgressIndicator())
-                : Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.3),
-                              SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.3,
-                                  child: _buildProfileImage()),
-                              Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.3,
-                                  //color: Colors.red,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 5),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Transform.scale(
-                                          scale: 1.5,
-                                          child: IconButton(
-                                            onPressed: () {
-                                              Navigator.of(context)
-                                                  .pushNamed('/edit');
-                                            },
-                                            icon: Icon(Icons.settings_outlined),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ))
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          child: Text(
-                            '$fullName',
-                            overflow: TextOverflow.visible,
-                            maxLines: 3,
-                            style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.w500)),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          child: Text(
-                            '($username)',
-                            overflow: TextOverflow.visible,
-                            maxLines: 3,
-                            style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(
-                                    color: Colors.black, fontSize: 15)),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.1),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: [
-                              Row(
+                : SingleChildScrollView(
+                    child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('Gender Identity',
-                                      textAlign: TextAlign.left,
-                                      style: GoogleFonts.poppins(
-                                          textStyle: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 25))),
+                                  SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.3),
+                                  SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.3,
+                                      child: _buildProfileImage()),
+                                  Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.3,
+                                      //color: Colors.red,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 5),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            Transform.scale(
+                                              scale: 1.5,
+                                              child: IconButton(
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pushNamed('/edit');
+                                                },
+                                                icon: Icon(
+                                                    Icons.settings_outlined),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ))
                                 ],
                               ),
-                              Image.asset(
-                                  'lib/assets/images/icons/Gender Bread.png')
-                            ],
-                          ),
-                        ),
-                      ],
-                    )),
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.9,
+                              child: Text(
+                                '$fullName',
+                                overflow: TextOverflow.visible,
+                                maxLines: 3,
+                                style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.w500)),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.9,
+                              child: Text(
+                                '($username)',
+                                overflow: TextOverflow.visible,
+                                maxLines: 3,
+                                style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
+                                        color: Colors.black, fontSize: 15)),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.1),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text('Gender Identity',
+                                          textAlign: TextAlign.left,
+                                          style: GoogleFonts.poppins(
+                                              textStyle: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 25))),
+                                    ],
+                                  ),
+                                  Image.asset(
+                                      'lib/assets/images/icons/Gender Bread.png')
+                                ],
+                              ),
+                            ),
+                          ],
+                        )),
+                  ),
           ),
         ));
   }
