@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:ywda/widgets/app_drawer_widget.dart';
 import '../widgets/app_bottom_navbar_widget.dart';
+import '../widgets/custom_buttons_widgets.dart';
 
 class SelfAssessmentScreen extends StatelessWidget {
   const SelfAssessmentScreen({super.key});
@@ -15,7 +16,7 @@ class SelfAssessmentScreen extends StatelessWidget {
       child: Scaffold(
           appBar: AppBar(
             elevation: 0,
-            automaticallyImplyLeading: false,
+            automaticallyImplyLeading: true,
             actions: [
               Transform.scale(
                 scale: 1.5,
@@ -28,85 +29,30 @@ class SelfAssessmentScreen extends StatelessWidget {
               )
             ],
           ),
+          drawer: appDrawer(context),
           bottomNavigationBar: bottomNavigationBar(context, 0),
           body: SafeArea(
-            child: SingleChildScrollView(
-              child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Column(
-                        children: [
-                          _selfAssessmentButton(
-                              'lib/assets/images/icons/icons-creativity.png',
-                              'SKILLS DEVELOPMENT', () {
-                            Navigator.of(context).pushNamed('/skills');
-                          }),
-                          _selfAssessmentButton(
-                              'lib/assets/images/icons/Bread.png',
-                              'GENDER DEVELOPMENT', () {
-                            Navigator.of(context)
-                                .pushNamed('/genderDevelopment');
-                          }),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          const SizedBox(height: 90),
-                          _selfAssessmentButton(
-                              'lib/assets/images/icons/icons-brain.png',
-                              'MENTAL HEALTH', () async {
-                            Navigator.of(context).pushNamed('/mentalHealth');
-                          }),
-                          _selfAssessmentButton(
-                              'lib/assets/images/icons/Self Identification.png',
-                              'SELF IDENTIFICATION', () {
-                            Navigator.pushNamed(context, '/selfIdentification');
-                          }),
-                        ],
-                      )
-                    ],
-                  )),
-            ),
-          )),
-    );
-  }
-
-  Widget _selfAssessmentButton(
-      String imagePath, String label, Function onPress) {
-    return Padding(
-      padding: const EdgeInsets.all(5),
-      child: SizedBox(
-          width: 170,
-          height: 220,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
-            onPressed: () {
-              onPress();
-            },
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Image.asset(
-                    imagePath,
-                    scale: .7,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Text(label,
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.poppins(
-                          textStyle: const TextStyle(
-                              fontSize: 13,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold))),
-                )
-              ],
-            ),
+            child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    selfAssessmentButton('lib/assets/images/icons/Bread.png',
+                        'GENDER DEVELOPMENT', () {
+                      Navigator.of(context).pushNamed('/genderDevelopment');
+                    }),
+                    selfAssessmentButton(
+                        'lib/assets/images/icons/icons-brain.png',
+                        'MENTAL HEALTH', () async {
+                      Navigator.of(context).pushNamed('/mentalHealth');
+                    }),
+                    selfAssessmentButton(
+                        'lib/assets/images/icons/Self Identification.png',
+                        'SELF IDENTIFICATION', () {
+                      Navigator.pushNamed(context, '/selfIdentification');
+                    })
+                  ],
+                )),
           )),
     );
   }

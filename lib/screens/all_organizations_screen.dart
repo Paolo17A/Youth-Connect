@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ywda/screens/selected_organization_screen.dart';
+import 'package:ywda/widgets/app_drawer_widget.dart';
 import 'package:ywda/widgets/custom_textfield_widget.dart';
 
 import '../models/organization_model.dart';
@@ -80,6 +81,8 @@ class _AllOrganizationsScreenState extends State<AllOrganizationsScreen> {
       },
       child: Scaffold(
           bottomNavigationBar: bottomNavigationBar(context, 2),
+          appBar: AppBar(elevation: 0),
+          drawer: appDrawer(context),
           body: GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: SafeArea(

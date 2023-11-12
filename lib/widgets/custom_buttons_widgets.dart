@@ -51,3 +51,42 @@ Widget genderDevelopmentButton(String label, Function onPress) {
         ),
       ));
 }
+
+Widget selfAssessmentButton(String imagePath, String label, Function onPress,
+    {double size = 20}) {
+  return Padding(
+    padding: const EdgeInsets.all(15),
+    child: SizedBox(
+        width: double.infinity,
+        height: 100,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
+          onPressed: () {
+            onPress();
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              if (imagePath.isNotEmpty)
+                SizedBox(
+                  width: 75,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.asset(imagePath),
+                  ),
+                ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Text(label,
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.poppins(
+                        textStyle: TextStyle(
+                            fontSize: size,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold))),
+              )
+            ],
+          ),
+        )),
+  );
+}

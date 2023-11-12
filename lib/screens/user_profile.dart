@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ywda/widgets/app_drawer_widget.dart';
 
 import '../widgets/app_bottom_navbar_widget.dart';
 
@@ -84,7 +85,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           return false;
         },
         child: Scaffold(
+          appBar: AppBar(elevation: 0),
           bottomNavigationBar: bottomNavigationBar(context, 3),
+          drawer: appDrawer(context),
           body: SafeArea(
             child: _isLoading
                 ? const Center(child: CircularProgressIndicator())
@@ -164,7 +167,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             ),
                             SizedBox(
                                 height:
-                                    MediaQuery.of(context).size.height * 0.1),
+                                    MediaQuery.of(context).size.height * 0.02),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Column(

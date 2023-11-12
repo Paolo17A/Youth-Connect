@@ -118,6 +118,86 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
     }
   }
 
+  String _genderIdentityCalculator() {
+    if (genderIdentityM == 0 && genderIdentityF == 0) {
+      return 'NON GENDER';
+    }
+    double difference = (genderIdentityM - genderIdentityF).abs();
+    if (difference < 0.1) {
+      return 'TWO-SPIRIT';
+    }
+    if (genderIdentityF > genderIdentityM && difference > 0.1) {
+      return 'WOMAN';
+    }
+    if (genderIdentityM > genderIdentityF && difference > 0.1) {
+      return 'MAN';
+    }
+    return 'GENDERQUEER';
+  }
+
+  String _genderExpressionCalculator() {
+    if (genderExpressionM == 0 && genderExpressionF == 0) {
+      return 'AGENDER';
+    }
+    double difference = (genderExpressionM - genderExpressionF).abs();
+    if ((genderExpressionM == 0 && genderExpressionF <= 0.2) ||
+        (genderExpressionF == 0 && genderExpressionM <= 0.2)) {
+      return 'GENDER NEUTRAL';
+    }
+    if (genderExpressionF > genderExpressionM && difference > 0.1) {
+      return 'FEMME';
+    }
+    if (genderExpressionM > genderExpressionF && difference > 0.1) {
+      return 'BUTCH';
+    }
+    return 'ANDROGYNOUS';
+  }
+
+  String _biologicalSexCalculator() {
+    if (biologicalSexM == 0 && biologicalSexF == 0) {
+      return 'ASEX';
+    }
+    double difference = (biologicalSexM - biologicalSexF).abs();
+    if ((biologicalSexM == 0 && biologicalSexF <= 0.2)) {
+      return 'INTERSEX';
+    }
+    if (biologicalSexF > biologicalSexM && difference > 0.1) {
+      return 'FEMALE';
+    }
+    if (biologicalSexM > biologicalSexF && difference > 0.1) {
+      return 'MALE';
+    }
+    return 'MtF FEMALE';
+  }
+
+  String _sexAttractionCalculator() {
+    if (sexAttractM == 0 && sexAttractF == 0) {
+      return 'NOBODY';
+    }
+    if (sexAttractF == 1 && sexAttractM == 1) {
+      return 'PANSEXUAL';
+    }
+    if ((sexAttractM == 0 && sexAttractF > 0) ||
+        (sexAttractF == 0 && sexAttractM > 0)) {
+      return 'STRAIGHT';
+    }
+    return 'BISEXUAL';
+  }
+
+  String _romanceAttractionCalculator() {
+    if (romanceAttractM == 0 && romanceAttractF == 0) {
+      return 'NOBODY';
+    }
+    if (romanceAttractF == 1 && romanceAttractM == 1) {
+      return 'PANSEXUAL';
+    }
+    if ((romanceAttractM == 0 && romanceAttractF > 0) ||
+        (romanceAttractF == 0 && romanceAttractM > 0)) {
+      return 'STRAIGHT';
+    }
+    return 'BISEXUAL';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -183,10 +263,11 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
                         genderIdentityM = newVal;
                       });
                     }),
-                maleLabel: 'Man-ness'),
+                maleLabel: 'Man-ness',
+                calculatedResult: _genderIdentityCalculator()),
             color: Colors.cyan),
         _stackedImageAsset('lib/assets/images/icons/icons-brain.png',
-            scale: 5.5, top: 0)
+            scale: 5.5, top: 0, left: 2)
       ],
     );
   }
@@ -196,34 +277,36 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
     return Stack(
       children: [
         _dashedContainer(
-            _genderInteractables(
-                label: 'Gender Expression',
-                color: Color.fromARGB(255, 206, 194, 89),
-                femaleSlider: Slider(
-                    value: genderExpressionF,
-                    thumbColor: Colors.white,
-                    activeColor: thisColor,
-                    inactiveColor: thisColor.withOpacity(0.3),
-                    onChanged: (newVal) {
-                      setState(() {
-                        genderExpressionF = newVal;
-                      });
-                    }),
-                femaleLabel: 'Feminine',
-                maleSlider: Slider(
-                    value: genderExpressionM,
-                    thumbColor: Colors.white,
-                    activeColor: thisColor,
-                    inactiveColor: thisColor.withOpacity(0.3),
-                    onChanged: (newVal) {
-                      setState(() {
-                        genderExpressionM = newVal;
-                      });
-                    }),
-                maleLabel: 'Masculine'),
-            color: Colors.yellow),
+          _genderInteractables(
+              label: 'Gender Expression',
+              color: Color.fromARGB(255, 206, 194, 89),
+              femaleSlider: Slider(
+                  value: genderExpressionF,
+                  thumbColor: Colors.white,
+                  activeColor: thisColor,
+                  inactiveColor: thisColor.withOpacity(0.3),
+                  onChanged: (newVal) {
+                    setState(() {
+                      genderExpressionF = newVal;
+                    });
+                  }),
+              femaleLabel: 'Feminine',
+              maleSlider: Slider(
+                  value: genderExpressionM,
+                  thumbColor: Colors.white,
+                  activeColor: thisColor,
+                  inactiveColor: thisColor.withOpacity(0.3),
+                  onChanged: (newVal) {
+                    setState(() {
+                      genderExpressionM = newVal;
+                    });
+                  }),
+              maleLabel: 'Masculine',
+              calculatedResult: _genderExpressionCalculator()),
+          color: Colors.yellow,
+        ),
         _stackedImageAsset('lib/assets/images/icons/Bread.png',
-            scale: 6, top: 8)
+            scale: 7, top: -2)
       ],
     );
   }
@@ -257,10 +340,11 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
                         biologicalSexM = newVal;
                       });
                     }),
-                maleLabel: 'Male-ness'),
+                maleLabel: 'Male-ness',
+                calculatedResult: _biologicalSexCalculator()),
             color: Colors.purple),
         _stackedImageAsset('lib/assets/images/icons/icons-gender.png',
-            scale: 6.5, top: 8, left: 14)
+            scale: 9, top: 14, left: 8)
       ],
     );
   }
@@ -295,10 +379,11 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
                         sexAttractM = newVal;
                       });
                     }),
-                maleLabel: 'Masculinity'),
+                maleLabel: 'Masculinity',
+                calculatedResult: _sexAttractionCalculator()),
             color: Colors.red),
         _stackedImageAsset('lib/assets/images/icons/icons-heart.png',
-            scale: 0.75, top: 0)
+            scale: 1, top: 6, left: 3)
       ],
     );
   }
@@ -334,17 +419,18 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
                         romanceAttractM = newVal;
                       });
                     }),
-                maleLabel: 'Masculinity'),
+                maleLabel: 'Masculinity',
+                calculatedResult: _romanceAttractionCalculator()),
             color: Colors.red),
         _stackedImageAsset('lib/assets/images/icons/icons-heart.png',
-            scale: 0.75, top: 0)
+            scale: 1, top: 6, left: 3)
       ],
     );
   }
 
   Widget _dashedContainer(Widget child, {required Color color}) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 40),
+      padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
       child: DottedBorder(
         color: color,
         strokeWidth: 5,
@@ -375,6 +461,7 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
       required String femaleLabel,
       required Slider maleSlider,
       required String maleLabel,
+      required String calculatedResult,
       double fontSize = 23}) {
     return Column(
       children: [
@@ -398,23 +485,48 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
         ),
         Row(
           children: [
-            femaleSlider,
-            Text(femaleLabel, style: GoogleFonts.inter())
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Transform.scale(
+                  scale: 2, child: Icon(Icons.block, color: color)),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    femaleSlider,
+                    Text(femaleLabel,
+                        style: GoogleFonts.inter(
+                            textStyle: TextStyle(fontSize: 12)))
+                  ],
+                ),
+                Row(
+                  children: [
+                    maleSlider,
+                    Text(maleLabel,
+                        style: GoogleFonts.inter(
+                            textStyle: TextStyle(fontSize: 12)))
+                  ],
+                ),
+              ],
+            )
           ],
         ),
         Row(
-          children: [maleSlider, Text(maleLabel, style: GoogleFonts.inter())],
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Row(
-            children: [
-              ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(backgroundColor: color),
-                  child: Text('RESULT')),
-            ],
-          ),
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Row(
+                children: [
+                  ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(backgroundColor: color),
+                      child: Text(calculatedResult)),
+                ],
+              ),
+            )
+          ],
         )
       ],
     );

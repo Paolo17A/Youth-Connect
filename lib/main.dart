@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:ywda/screens/all_faqs_screen.dart';
 import 'package:ywda/screens/all_projects_screen.dart';
 import 'package:ywda/screens/all_organizations_screen.dart';
 import 'package:ywda/screens/edit_gender_screen.dart';
@@ -8,6 +9,7 @@ import 'package:ywda/screens/forgot_password_screen.dart';
 import 'package:ywda/screens/gender_development_screen.dart';
 import 'package:ywda/screens/home_screen.dart';
 import 'package:ywda/screens/login_screen.dart';
+import 'package:ywda/screens/lusog_isip_screen.dart';
 import 'package:ywda/screens/mental_health_screen.dart';
 import 'package:ywda/screens/overall_leaderboard_screen.dart';
 import 'package:ywda/screens/register_screen.dart';
@@ -39,6 +41,7 @@ class MyApp extends StatelessWidget {
     '/assessment': (context) => const SelfAssessmentScreen(),
     '/organization': (context) => const AllOrganizationsScreen(),
     '/mentalHealth': (context) => const MentalHealthScreen(),
+    '/lusogIsip': (context) => const LusogIsip(),
     '/events': (context) => const AllProjectsScreen(),
     '/profile': (context) => const UserProfileScreen(),
     '/edit': (context) => EditProfileScreen(),
@@ -49,7 +52,8 @@ class MyApp extends StatelessWidget {
         const SelfIdentificationCategoryScreen(),
     '/genderDevelopment': (context) => const GenderDevelopmentScreen(),
     '/editGender': (context) => const EditGenderScreen(),
-    '/overallLeaderboard': (context) => const OverallLeaderboardScreen()
+    '/overallLeaderboard': (context) => const OverallLeaderboardScreen(),
+    '/faqs': (context) => const AllFAQsScreen()
   };
 
   final ThemeData _themeData = ThemeData(

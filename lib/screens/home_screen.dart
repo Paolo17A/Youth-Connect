@@ -1,11 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
-import 'package:ywda/screens/view_announcement_screen.dart';
+import 'package:ywda/widgets/app_drawer_widget.dart';
+import 'package:ywda/widgets/custom_containers_widget.dart';
 import 'package:ywda/widgets/custom_styling_widgets.dart';
 import 'package:ywda/utils/quit_dialogue_util.dart';
 import 'package:ywda/widgets/app_bottom_navbar_widget.dart';
@@ -20,25 +19,28 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool _isLoading = true;
   List<dynamic> videos = [];
-  List<DocumentSnapshot> allAnnouncements = [];
+  bool _viewingAllProjects = true;
   List<DocumentSnapshot> allProjects = [];
+  List<DocumentSnapshot> filteredProjects = [];
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    getAllAnnouncementsAndProjects();
+    getAllProjects();
   }
 
-  void getAllAnnouncementsAndProjects() async {
+  void getAllProjects() async {
     final scaffoldMessenger = ScaffoldMessenger.of(context);
     try {
-      final articles =
-          await FirebaseFirestore.instance.collection('announcements').get();
-      allAnnouncements = articles.docs;
-
       final projects =
           await FirebaseFirestore.instance.collection('projects').get();
       allProjects = projects.docs;
+
+      filteredProjects = allProjects.where((project) {
+        final projectData = project.data() as Map<dynamic, dynamic>;
+        List<dynamic> participants = projectData['participants'];
+        return participants.contains(FirebaseAuth.instance.currentUser!.uid);
+      }).toList();
       setState(() {
         _isLoading = false;
       });
@@ -46,16 +48,6 @@ class _HomeScreenState extends State<HomeScreen> {
       scaffoldMessenger.showSnackBar(
           SnackBar(content: Text('Error getting all announcements: $error')));
     }
-  }
-
-  Future<Uint8List> generateThumbnail(String videoPath) async {
-    final uint8list = await VideoThumbnail.thumbnailData(
-        video: videoPath,
-        imageFormat: ImageFormat.JPEG,
-        maxWidth:
-            128, // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
-        quality: 25);
-    return uint8list!;
   }
 
   void toggleJoinState(String projectID, bool isJoining) async {
@@ -82,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
           .doc(projectID)
           .update({'participants': participants});
 
-      getAllAnnouncementsAndProjects();
+      getAllProjects();
       scaffoldMessenger.showSnackBar(SnackBar(
           content: Text(
               'Successfully ${isJoining ? 'joined' : 'left'} this project')));
@@ -96,148 +88,103 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () => displayQuitDialogue(context),
-      child: Scaffold(
-          bottomNavigationBar: bottomNavigationBar(context, 1),
-          body: SafeArea(
-              child: _isLoading
-                  ? Center(child: CircularProgressIndicator())
-                  : SingleChildScrollView(
-                      child: Column(
-                        children: [articlesContainer(), projectsContainer()],
-                      ),
-                    ))),
-    );
-  }
-
-  Widget articlesContainer() {
-    return Column(
-      children: [
-        Text('Announcements',
-            style: GoogleFonts.poppins(
-                textStyle: TextStyle(fontWeight: FontWeight.bold))),
-        _halfedHomeContainer(allAnnouncements.isNotEmpty
-            ? ListView.builder(
-                shrinkWrap: true,
-                itemCount: allAnnouncements.length,
-                itemBuilder: (context, index) {
-                  //  Local variables for better readability
-                  Map<dynamic, dynamic> announcement =
-                      allAnnouncements[index].data() as Map<dynamic, dynamic>;
-                  String title = announcement['title'];
-                  String content = announcement['content'];
-                  Timestamp dateAdded = announcement['dateAdded'];
-                  DateTime dateAnnounced = dateAdded.toDate();
-                  String formattedDateAnnounced =
-                      DateFormat('dd MMM yyyy').format(dateAnnounced);
-                  List<dynamic> imageURLs = announcement['imageURLs'];
-                  return GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ViewAnnouncementScreen(
-                                announcement: allAnnouncements[index])));
-                      },
-                      child: announcementEntryContainer(
-                          imageURLs, formattedDateAnnounced, title, content));
-                })
-            : Center(
-                child:
-                    Text('No ANNOUNCEMENTS YET', style: noEntryTextStyle()))),
-      ],
-    );
-  }
-
-  Widget projectsContainer() {
-    return Column(
-      children: [
-        Text('Projects',
-            style: GoogleFonts.poppins(
-                textStyle: TextStyle(fontWeight: FontWeight.bold))),
-        _halfedHomeContainer(allProjects.isNotEmpty
-            ? ListView.builder(
-                shrinkWrap: true,
-                itemCount: allProjects.length,
-                itemBuilder: (context, index) {
-                  //  Local variables for better readability
-                  Map<dynamic, dynamic> project =
-                      allProjects[index].data() as Map<dynamic, dynamic>;
-                  String title = project['title'];
-                  String content = project['content'];
-                  Timestamp projectDate = project['projectDate'];
-                  DateTime dateAnnounced = projectDate.toDate();
-                  String formattedDateAnnounced =
-                      DateFormat('dd MMM yyyy').format(dateAnnounced);
-                  List<dynamic> imageURLs = project['imageURLs'];
-                  List<dynamic> participants = project['participants'];
-                  return GestureDetector(
-                      onTap: () {},
-                      child: projectEntryContainer(
-                          allProjects[index].id,
-                          imageURLs,
-                          formattedDateAnnounced,
-                          title,
-                          content,
-                          participants));
-                })
-            : Center(
-                child: Text('No PROJECTS YET', style: noEntryTextStyle()))),
-      ],
-    );
-  }
-
-  Widget _halfedHomeContainer(Widget child) {
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: Container(
-          height: MediaQuery.of(context).size.height * 0.4,
-          width: double.infinity,
-          decoration: BoxDecoration(
-              color: Color.fromARGB(255, 98, 135, 170).withOpacity(0.3),
-              borderRadius: BorderRadius.circular(10)),
-          child: child),
-    );
-  }
-
-  Widget announcementEntryContainer(List<dynamic> imageURLs,
-      String formattedDateAnnounced, String title, String content) {
-    return Padding(
-        padding: EdgeInsets.all(10),
-        child: Container(
-            width: double.infinity,
-            height: 90,
-            decoration: decorationWithShadow(),
-            child: Row(
-              children: [
-                if (imageURLs.isNotEmpty)
-                  allPadding4pix(_miniNetworkImage(imageURLs[0])),
-                announcementEntryTextContainer(
-                    imageURLs, formattedDateAnnounced, title, content)
+      child: RefreshIndicator(
+        onRefresh: () async {
+          setState(() {
+            _isLoading = true;
+            getAllProjects();
+          });
+        },
+        child: Scaffold(
+            bottomNavigationBar: bottomNavigationBar(context, 1),
+            drawer: appDrawer(context),
+            appBar: AppBar(
+              elevation: 0,
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      setState(() {
+                        _viewingAllProjects = !_viewingAllProjects;
+                      });
+                    },
+                    child: Text(
+                        _viewingAllProjects
+                            ? 'Joined\nProjects'
+                            : 'All\nProjects',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15)))
               ],
-            )));
-  }
-
-  Widget announcementEntryTextContainer(List<dynamic> imageURLs,
-      String formattedDateAnnounced, String title, String content) {
-    return SizedBox(
-      width:
-          imageURLs.isNotEmpty ? MediaQuery.of(context).size.width * 0.6 : 300,
-      child: Column(
-        children: [
-          allPadding4pix(Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text(formattedDateAnnounced,
-                  textAlign: TextAlign.right, style: TextStyle(fontSize: 14)),
-            ],
-          )),
-          horizontalPadding5pix(Text(title, style: titleTextStyle())),
-          horizontalPadding5pix(SizedBox(
-            width: 220,
-            height: 40,
-            child: Text(content, softWrap: true, style: contentTextStyle()),
-          ))
-        ],
+            ),
+            body: SafeArea(
+                child: switchedLoadingContainer(
+                    _isLoading,
+                    _viewingAllProjects
+                        ? allProjectsContainer()
+                        : joinedProjectsContainer()))),
       ),
     );
+  }
+
+  Widget allProjectsContainer() {
+    return allProjects.isNotEmpty
+        ? ListView.builder(
+            shrinkWrap: true,
+            itemCount: allProjects.length,
+            itemBuilder: (context, index) {
+              //  Local variables for better readability
+              Map<dynamic, dynamic> project =
+                  allProjects[index].data() as Map<dynamic, dynamic>;
+              String title = project['title'];
+              String content = project['content'];
+              Timestamp projectDate = project['projectDate'];
+              DateTime dateAnnounced = projectDate.toDate();
+              String formattedDateAnnounced =
+                  DateFormat('dd MMM yyyy').format(dateAnnounced);
+              List<dynamic> imageURLs = project['imageURLs'];
+              List<dynamic> participants = project['participants'];
+              return GestureDetector(
+                  onTap: () {},
+                  child: projectEntryContainer(allProjects[index].id, imageURLs,
+                      formattedDateAnnounced, title, content, participants));
+            })
+        : Center(
+            child: Text('NO PROJECTS YET',
+                textAlign: TextAlign.center, style: noEntryTextStyle()));
+  }
+
+  Widget joinedProjectsContainer() {
+    return filteredProjects.isNotEmpty
+        ? ListView.builder(
+            shrinkWrap: true,
+            itemCount: filteredProjects.length,
+            itemBuilder: (context, index) {
+              //  Local variables for better readability
+              Map<dynamic, dynamic> project =
+                  filteredProjects[index].data() as Map<dynamic, dynamic>;
+              String title = project['title'];
+              String content = project['content'];
+              Timestamp projectDate = project['projectDate'];
+              DateTime dateAnnounced = projectDate.toDate();
+              String formattedDateAnnounced =
+                  DateFormat('dd MMM yyyy').format(dateAnnounced);
+              List<dynamic> imageURLs = project['imageURLs'];
+              List<dynamic> participants = project['participants'];
+              return GestureDetector(
+                  onTap: () {},
+                  child: projectEntryContainer(
+                      filteredProjects[index].id,
+                      imageURLs,
+                      formattedDateAnnounced,
+                      title,
+                      content,
+                      participants));
+            })
+        : Center(
+            child: Text('YOU HAVE NOT JOINED ANY PROJECTS YET',
+                textAlign: TextAlign.center, style: noEntryTextStyle()));
   }
 
   Widget projectEntryContainer(
@@ -351,14 +298,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           fontSize: 18)))),
         ],
       ),
-    );
-  }
-
-  Widget _miniNetworkImage(String src) {
-    return Container(
-      width: 80,
-      height: 80,
-      child: Image.network(src),
     );
   }
 }
