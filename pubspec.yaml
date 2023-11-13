@@ -48,6 +48,7 @@ dependencies:
   image_picker: ^1.0.4
   firebase_storage: ^11.2.8
   dotted_border: ^2.1.0
+  gap: ^3.0.1
 
 dev_dependencies:
   flutter_test:

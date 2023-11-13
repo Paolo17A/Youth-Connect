@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-Widget registerSubmitButton(Function onPress) {
+Widget authenticationSubmitButton(
+    String label, Function onPress, bool isShort) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 10),
     child: Row(
@@ -9,7 +10,7 @@ Widget registerSubmitButton(Function onPress) {
       children: [
         SizedBox(
           height: 40,
-          width: 120,
+          width: isShort ? 120 : 230,
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 34, 52, 189),
@@ -18,7 +19,7 @@ Widget registerSubmitButton(Function onPress) {
             onPressed: () {
               onPress();
             },
-            child: Text('NEXT',
+            child: Text(label,
                 style: GoogleFonts.poppins(
                     textStyle: const TextStyle(
                         fontWeight: FontWeight.w700,

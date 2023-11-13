@@ -28,20 +28,17 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   void _getUserData() async {
     final scaffoldMessenger = ScaffoldMessenger.of(context);
     try {
-      final currentUserData = await FirebaseFirestore.instance
+      final user = await FirebaseFirestore.instance
           .collection('users')
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .get();
-      fullName = currentUserData.data()!.containsKey('fullName')
-          ? currentUserData.data()!['fullName']
-          : '';
+      final userData = user.data() as Map<dynamic, dynamic>;
+      fullName = '${userData['firstName']} ${userData['lastName']}';
 
-      username = currentUserData.data()!.containsKey('username')
-          ? currentUserData.data()!['username']
-          : '';
+      username = userData.containsKey('username') ? userData['username'] : '';
 
-      if (currentUserData.data()!.containsKey('profileImageURL')) {
-        _profileImageURL = currentUserData.data()!['profileImageURL'];
+      if (userData.containsKey('profileImageURL')) {
+        _profileImageURL = userData['profileImageURL'];
       } else {
         await FirebaseFirestore.instance
             .collection('users')

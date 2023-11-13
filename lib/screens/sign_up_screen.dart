@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ywda/screens/register_screen.dart';
 import 'package:ywda/utils/text_processor_util.dart';
+import 'package:ywda/widgets/custom_miscellaneous_widgets.dart';
 
+import '../widgets/custom_containers_widget.dart';
 import '../widgets/custom_textfield_widget.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -32,7 +34,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Future<void> _registerUser() async {
     final scaffoldMessenger = ScaffoldMessenger.of(context);
-    final navigator = Navigator.of(context);
     //  Guard conditionals
     if (_emailAddressController.text.isEmpty ||
         _usernameController.text.isEmpty ||
@@ -55,6 +56,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
       scaffoldMessenger.showSnackBar(
           const SnackBar(content: Text('Passwords do not match.')));
       return;
+    } else if (_passwordController.text.length < 6) {
+      scaffoldMessenger.showSnackBar(SnackBar(
+          content: Text('Password must be awt least six characters long.')));
+      return;
     }
     try {
       setState(() {
@@ -71,16 +76,34 @@ class _SignUpScreenState extends State<SignUpScreen> {
             const SnackBar(content: Text('Username is already taken.')));
         setState(() {
           _isLoading = false;
-          _usernameController.clear();
-          _passwordController.clear();
-          _confirmPasswordController.clear();
-          _emailAddressController.clear();
         });
         return;
       }
 
+      final emailExists = await FirebaseFirestore.instance
+          .collection('users')
+          .where('email', isEqualTo: _emailAddressController.text)
+          .get();
+
+      if (emailExists.docs.isNotEmpty) {
+        scaffoldMessenger.showSnackBar(
+            const SnackBar(content: Text('Email is already taken.')));
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
+      setState(() {
+        _isLoading = false;
+      });
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => RegisterScreen(
+              username: _usernameController.text,
+              email: _emailAddressController.text,
+              password: _passwordController.text)));
+
       //  Proceed with registration of user.
-      final userCredential =
+      /*final userCredential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _emailAddressController.text,
         password: _passwordController.text,
@@ -128,7 +151,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       });
       scaffoldMessenger.showSnackBar(
           const SnackBar(content: Text('Successfully created new account')));
-      navigator.pushReplacementNamed('/login');
+      navigator.pushReplacementNamed('/login');*/
     } catch (e) {
       scaffoldMessenger.showSnackBar(SnackBar(content: Text(e.toString())));
       _usernameController.clear();
@@ -145,129 +168,125 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: SingleChildScrollView(
-          child: Stack(
-            children: [
-              Positioned(
-                top: -15,
-                right: -15,
-                child: Image.asset('lib/assets/images/icons/Design.png',
-                    scale: 2.75),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 30),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 40),
-                      child: Text('SIGN UP',
-                          style: GoogleFonts.poppins(
-                              textStyle: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 32,
-                                  fontWeight: FontWeight.w600))),
-                    ),
-                    Row(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: SingleChildScrollView(
+            child: stackedLoadingContainer(
+              context,
+              _isLoading,
+              Stack(
+                children: [
+                  loginDesign(),
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text('Account Details',
-                            style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.w800)))
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: customTextField(
-                          'Username', _usernameController, TextInputType.name),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: customTextField('Email Address',
-                          _emailAddressController, TextInputType.emailAddress),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: customTextField('Password', _passwordController,
-                          TextInputType.visiblePassword),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: customTextField(
-                          'Confirm Password',
-                          _confirmPasswordController,
-                          TextInputType.visiblePassword),
-                    ),
-                    const SizedBox(height: 50),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          SizedBox(
-                            height: 40,
-                            width: 120,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      const Color.fromARGB(255, 34, 52, 189),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15))),
-                              onPressed: _registerUser,
-                              child: Text('SUBMIT',
-                                  style: GoogleFonts.poppins(
-                                      textStyle: const TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.white,
-                                          fontSize: 14))),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('Already have an account?',
-                              style: GoogleFonts.poppins()),
-                          TextButton(
-                              onPressed: () {
-                                Navigator.of(context)
-                                    .pushReplacementNamed('/login');
-                              },
-                              child: Text(
-                                'Log In',
+                        const SizedBox(height: 30),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 40),
+                          child: Text('SIGN UP',
+                              style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.w600))),
+                        ),
+                        Row(
+                          children: [
+                            Text('Account Details',
                                 style: GoogleFonts.poppins(
                                     textStyle: const TextStyle(
-                                        decoration: TextDecoration.underline,
-                                        fontWeight: FontWeight.bold,
-                                        color:
-                                            Color.fromARGB(255, 53, 113, 217))),
-                              ))
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              if (_isLoading)
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
-                  color: Colors.black.withOpacity(0.5),
-                  child: const Center(
-                    child: CircularProgressIndicator(),
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w800)))
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: customTextField('Username',
+                              _usernameController, TextInputType.name),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: customTextField(
+                              'Email Address',
+                              _emailAddressController,
+                              TextInputType.emailAddress),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: customTextField(
+                              'Password',
+                              _passwordController,
+                              TextInputType.visiblePassword),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: customTextField(
+                              'Confirm Password',
+                              _confirmPasswordController,
+                              TextInputType.visiblePassword),
+                        ),
+                        const SizedBox(height: 50),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              SizedBox(
+                                height: 40,
+                                width: 120,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color.fromARGB(
+                                          255, 34, 52, 189),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15))),
+                                  onPressed: _registerUser,
+                                  child: Text('SUBMIT',
+                                      style: GoogleFonts.poppins(
+                                          textStyle: const TextStyle(
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.white,
+                                              fontSize: 14))),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('Already have an account?',
+                                  style: GoogleFonts.poppins()),
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context)
+                                        .pushReplacementNamed('/login');
+                                  },
+                                  child: Text(
+                                    'Log In',
+                                    style: GoogleFonts.poppins(
+                                        textStyle: const TextStyle(
+                                            decoration:
+                                                TextDecoration.underline,
+                                            fontWeight: FontWeight.bold,
+                                            color: Color.fromARGB(
+                                                255, 53, 113, 217))),
+                                  ))
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-            ],
-          ),
-        ),
-      ),
+                ],
+              ),
+            ),
+          )),
     );
   }
 }

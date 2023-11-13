@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-Widget borderedTextContainer(String label, String textInput) {
+Widget borderedTextContainer(String label, String textInput,
+    {double height = 50}) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: Column(
@@ -15,7 +16,7 @@ Widget borderedTextContainer(String label, String textInput) {
           ),
         ),
         Container(
-            height: 50,
+            height: height,
             width: double.infinity,
             decoration: BoxDecoration(
                 color: Colors.black.withOpacity(0.05),

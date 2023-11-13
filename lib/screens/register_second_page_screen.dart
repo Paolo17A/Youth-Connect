@@ -4,19 +4,32 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ywda/widgets/bordered_text_container_widgert.dart';
 import 'package:ywda/widgets/custom_buttons_widgets.dart';
+import 'package:ywda/widgets/custom_containers_widget.dart';
 import 'package:ywda/widgets/custom_styling_widgets.dart';
 import 'package:ywda/widgets/custom_textfield_widget.dart';
 import 'package:ywda/widgets/dropdown_widget.dart';
 
+import '../widgets/custom_miscellaneous_widgets.dart';
+
 class RegisterSecondPageScreen extends StatefulWidget {
-  final String fullName;
+  final String username;
+  final String email;
+  final String password;
+  final String firstName;
+  final String middleName;
+  final String lastName;
   final String gender;
   final String civilStatus;
   final DateTime birthday;
   final String city;
   const RegisterSecondPageScreen(
       {super.key,
-      required this.fullName,
+      required this.username,
+      required this.email,
+      required this.password,
+      required this.firstName,
+      required this.middleName,
+      required this.lastName,
       required this.gender,
       required this.civilStatus,
       required this.birthday,
@@ -131,13 +144,26 @@ class _RegisterSecondPageScreenState extends State<RegisterSecondPageScreen> {
         _isLoading = true;
       });
 
+      //  Proceed with registration of user.
+      final userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: widget.email,
+        password: widget.password,
+      );
+
       //  Update this user's data on Firestore
       await FirebaseFirestore.instance
           .collection('users')
           .doc(FirebaseAuth.instance.currentUser!.uid)
-          .update({
+          .set({
         'accountInitialized': true,
-        'fullName': widget.fullName,
+        'userType': 'CLIENT',
+        'username': widget.username,
+        'email': widget.email,
+        'password': widget.password,
+        'firstName': widget.firstName,
+        'middleName': widget.middleName,
+        'lastName': widget.lastName,
         'gender': widget.gender,
         'civilStatus': widget.civilStatus,
         'birthday': widget.birthday,
@@ -150,8 +176,22 @@ class _RegisterSecondPageScreenState extends State<RegisterSecondPageScreen> {
         'selfIdentification': {},
         'skillsDeveloped': {},
         'surveyAnswers': {},
-        'profileImageURL': ''
+        'emotionTracker': {},
+        'toleranceTest': {},
+        'slaveOfSocials': {},
+        'personalShield': {},
+        'profileImageURL': '',
+        'genderDevelopment': {
+          'genderIdentity': {'M': 0, 'F': 0},
+          'genderExpression': {'M': 0, 'F': 0},
+          'biologicalSex': {'M': 0, 'F': 0},
+          'sexAttract': {'M': 0, 'F': 0},
+          'romanceAttract': {'M': 0, 'F': 0},
+        }
       });
+
+      //  Send email verification link to user's email.
+      await userCredential.user!.sendEmailVerification();
 
       //  Update the org's participants in Firstore
       final org = await FirebaseFirestore.instance
@@ -168,7 +208,7 @@ class _RegisterSecondPageScreenState extends State<RegisterSecondPageScreen> {
           .doc(_selectedOrgID)
           .update({'members': orgMembers});
 
-      navigator.pushNamedAndRemoveUntil('/home', ModalRoute.withName('/'));
+      navigator.pushNamedAndRemoveUntil('/login', ModalRoute.withName('/'));
     } catch (error) {
       setState(() {
         _isLoading = false;
@@ -187,17 +227,12 @@ class _RegisterSecondPageScreenState extends State<RegisterSecondPageScreen> {
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: SingleChildScrollView(
-          child: Stack(
+            child: stackedLoadingContainer(
+          context,
+          _isLoading,
+          Stack(
             children: [
-              Positioned(
-                bottom: -40,
-                right: -30,
-                child: Transform.scale(
-                  scaleY: -1,
-                  child: Image.asset('lib/assets/images/icons/Design.png',
-                      scale: 2.75),
-                ),
-              ),
+              registerDesign(),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.9,
                 child: Padding(
@@ -211,25 +246,16 @@ class _RegisterSecondPageScreenState extends State<RegisterSecondPageScreen> {
                       _selectedOrgWidget(),
                       _orgPositionWidget(),
                       const SizedBox(height: 50),
-                      registerSubmitButton(() {
+                      authenticationSubmitButton('FINISH', () {
                         _submitRegistrationData();
-                      })
+                      }, true)
                     ],
                   ),
                 ),
               ),
-              if (_isLoading)
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
-                  color: Colors.black.withOpacity(0.5),
-                  child: const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                )
             ],
           ),
-        ),
+        )),
       ),
     );
   }

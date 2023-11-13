@@ -22,7 +22,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   File? _imageFile;
   late ImagePicker imagePicker;
   late String _profileImageURL;
-  final _fullNameController = TextEditingController();
+  final _firstNameController = TextEditingController();
+  final _middlenameController = TextEditingController();
+  final _lastNameController = TextEditingController();
   final _cityController = TextEditingController();
   DateTime? birthday;
   int age = 0;
@@ -53,7 +55,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   void dispose() {
     super.dispose();
-    _fullNameController.dispose();
+    _firstNameController.dispose();
+    _middlenameController.dispose();
+    _lastNameController.dispose();
     _cityController.dispose();
     _specialGenderController.dispose();
   }
@@ -65,9 +69,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .get();
 
-      _fullNameController.text = currentUserData.data()!.containsKey('fullName')
-          ? currentUserData.data()!['fullName']
-          : '';
+      _firstNameController.text =
+          currentUserData.data()!.containsKey('firstName')
+              ? currentUserData.data()!['firstName']
+              : '';
+
+      _middlenameController.text =
+          currentUserData.data()!.containsKey('middleName')
+              ? currentUserData.data()!['middleName']
+              : '';
 
       _cityController.text = currentUserData.data()!.containsKey('city')
           ? currentUserData.data()!['city']
@@ -86,9 +96,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         _specialGenderController.text = currentUserData.data()!['gender'];
       }
 
-      /* _civilStatus = currentUserData.data()!['civilStatus'];
+      _civilStatus = currentUserData.data()!['civilStatus'];
 
-      _selectedCategory = currentUserData.data()!['category'];
+      /*_selectedCategory = currentUserData.data()!['category'];
       switch (_selectedCategory) {
         case 'IN SCHOOL':
         _selectedInSchoolStatus = 
@@ -108,7 +118,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void _updateUserProfile() async {
     final scaffoldMessenger = ScaffoldMessenger.of(context);
     final navigatorState = Navigator.of(context);
-    if (_fullNameController.text.isEmpty) {
+    if (_firstNameController.text.isEmpty ||
+        _middlenameController.text.isEmpty ||
+        _lastNameController.text.isEmpty) {
       scaffoldMessenger
           .showSnackBar(SnackBar(content: Text('Please fill up all fields')));
       return;
@@ -126,7 +138,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           .collection('users')
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .update({
-        'fullName': _fullNameController.text,
+        'firstName': _firstNameController.text,
+        'middleName': _middlenameController.text,
+        'lastName': _lastNameController.text,
         'city': _cityController.text,
         'birthday': birthday,
         'gender': _gender == 'LET ME TYPE...'
@@ -343,9 +357,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       child: Column(
         children: [
           Row(children: [
-            Text('Full Name', style: GoogleFonts.poppins()),
+            Text('First Name', style: GoogleFonts.poppins()),
           ]),
-          customTextField('Full Name', _fullNameController, TextInputType.name),
+          customTextField(
+              'First Name', _firstNameController, TextInputType.name),
         ],
       ),
     );
