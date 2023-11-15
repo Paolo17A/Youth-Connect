@@ -177,8 +177,9 @@ class _RegisterSecondPageScreenState extends State<RegisterSecondPageScreen> {
         'skillsDeveloped': {},
         'surveyAnswers': {},
         'emotionTracker': {},
-        'toleranceTest': {},
-        'slaveOfSocials': {},
+        'toleranceTest': {'entries': [], 'rating': ''},
+        'slaveOfSocials': {'entries': [], 'rating': ''},
+        'twentyStatements': {'entries': [], 'rating': ''},
         'personalShield': {},
         'profileImageURL': '',
         'genderDevelopment': {

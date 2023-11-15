@@ -37,3 +37,37 @@ void displayInstructionDialogue(
             ),
           ))));
 }
+
+void selfAssessmentInstructionDialogue(
+    BuildContext ctx, String task, String instruction,
+    {double? height}) {
+  showDialog(
+      context: ctx,
+      builder: ((context) => AlertDialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          content: Container(
+            width: MediaQuery.of(context).size.width * 0.75,
+            height: height ?? MediaQuery.of(context).size.height * 0.75,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Center(
+                    child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(task,
+                        textAlign: TextAlign.justify,
+                        softWrap: true,
+                        style: GoogleFonts.poppins()),
+                    const SizedBox(height: 30),
+                    Text(instruction,
+                        textAlign: TextAlign.justify,
+                        softWrap: true,
+                        style: GoogleFonts.poppins())
+                  ],
+                )),
+              ),
+            ),
+          ))));
+}

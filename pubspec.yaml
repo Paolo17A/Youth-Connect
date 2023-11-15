@@ -49,6 +49,8 @@ dependencies:
   firebase_storage: ^11.2.8
   dotted_border: ^2.1.0
   gap: ^3.0.1
+  widget_mask: ^1.0.0+0
+  carousel_slider: ^4.2.1
 
 dev_dependencies:
   flutter_test:
@@ -80,7 +82,9 @@ flutter:
   assets:
     - lib/assets/images/ywda_logo.png
     - lib/assets/images/icons/
+    - lib/assets/images/emotions/
     - lib/assets/images/Organizations/
+    - lib/assets/images/shield/
     - lib/data/
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'custom_styling_widgets.dart';
+
 Widget authenticationSubmitButton(
     String label, Function onPress, bool isShort) {
   return Padding(
@@ -89,5 +91,40 @@ Widget selfAssessmentButton(String imagePath, String label, Function onPress,
             ],
           ),
         )),
+  );
+}
+
+Widget toleranceButton(BuildContext context,
+    {required String label, required Function onPress}) {
+  return allPadding8Pix(SizedBox(
+    width: MediaQuery.of(context).size.width * 0.6,
+    child: ElevatedButton(onPressed: () => onPress(), child: Text(label)),
+  ));
+}
+
+Widget submitSelfAssessmentEntry({required label, required Function onPress}) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 29, vertical: 19),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        SizedBox(
+          width: 110,
+          child: ElevatedButton(
+              onPressed: () => onPress(),
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 175, 210, 244),
+                  foregroundColor: Colors.black,
+                  disabledBackgroundColor: Color.fromARGB(255, 153, 165, 177),
+                  disabledForegroundColor: Color.fromARGB(255, 132, 126, 126),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(40))),
+              child: Text(label,
+                  style: GoogleFonts.poppins(
+                      textStyle: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 18)))),
+        )
+      ],
+    ),
   );
 }

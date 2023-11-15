@@ -15,16 +15,16 @@ class EditGenderScreen extends StatefulWidget {
 class _EditGenderScreenState extends State<EditGenderScreen> {
   bool _isLoading = true;
   bool _isInitialized = false;
-  double genderIdentityF = 0;
-  double genderIdentityM = 0;
-  double genderExpressionF = 0;
-  double genderExpressionM = 0;
-  double biologicalSexF = 0;
-  double biologicalSexM = 0;
-  double sexAttractF = 0;
-  double sexAttractM = 0;
-  double romanceAttractF = 0;
-  double romanceAttractM = 0;
+  num genderIdentityF = 0;
+  num genderIdentityM = 0;
+  num genderExpressionF = 0;
+  num genderExpressionM = 0;
+  num biologicalSexF = 0;
+  num biologicalSexM = 0;
+  num sexAttractF = 0;
+  num sexAttractM = 0;
+  num romanceAttractF = 0;
+  num romanceAttractM = 0;
 
   @override
   void didChangeDependencies() {
@@ -37,6 +37,7 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
       return;
     }
     final scaffoldMessenger = ScaffoldMessenger.of(context);
+
     try {
       final user = await FirebaseFirestore.instance
           .collection('users')
@@ -122,7 +123,7 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
     if (genderIdentityM == 0 && genderIdentityF == 0) {
       return 'NON GENDER';
     }
-    double difference = (genderIdentityM - genderIdentityF).abs();
+    num difference = (genderIdentityM - genderIdentityF).abs();
     if (difference < 0.1) {
       return 'TWO-SPIRIT';
     }
@@ -139,7 +140,7 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
     if (genderExpressionM == 0 && genderExpressionF == 0) {
       return 'AGENDER';
     }
-    double difference = (genderExpressionM - genderExpressionF).abs();
+    num difference = (genderExpressionM - genderExpressionF).abs();
     if ((genderExpressionM == 0 && genderExpressionF <= 0.2) ||
         (genderExpressionF == 0 && genderExpressionM <= 0.2)) {
       return 'GENDER NEUTRAL';
@@ -157,7 +158,7 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
     if (biologicalSexM == 0 && biologicalSexF == 0) {
       return 'ASEX';
     }
-    double difference = (biologicalSexM - biologicalSexF).abs();
+    num difference = (biologicalSexM - biologicalSexF).abs();
     if ((biologicalSexM == 0 && biologicalSexF <= 0.2)) {
       return 'INTERSEX';
     }
@@ -243,7 +244,7 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
                 label: 'Gender Identity',
                 color: thisColor,
                 femaleSlider: Slider(
-                    value: genderIdentityF,
+                    value: genderIdentityF.toDouble(),
                     thumbColor: Colors.white,
                     activeColor: thisColor,
                     inactiveColor: thisColor.withOpacity(0.3),
@@ -254,7 +255,7 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
                     }),
                 femaleLabel: 'Woman-ness',
                 maleSlider: Slider(
-                    value: genderIdentityM,
+                    value: genderIdentityM.toDouble(),
                     thumbColor: Colors.white,
                     activeColor: thisColor,
                     inactiveColor: thisColor.withOpacity(0.3),
@@ -281,7 +282,7 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
               label: 'Gender Expression',
               color: Color.fromARGB(255, 206, 194, 89),
               femaleSlider: Slider(
-                  value: genderExpressionF,
+                  value: genderExpressionF.toDouble(),
                   thumbColor: Colors.white,
                   activeColor: thisColor,
                   inactiveColor: thisColor.withOpacity(0.3),
@@ -292,7 +293,7 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
                   }),
               femaleLabel: 'Feminine',
               maleSlider: Slider(
-                  value: genderExpressionM,
+                  value: genderExpressionM.toDouble(),
                   thumbColor: Colors.white,
                   activeColor: thisColor,
                   inactiveColor: thisColor.withOpacity(0.3),
@@ -320,7 +321,7 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
                 label: 'Biological Sex',
                 color: thisColor,
                 femaleSlider: Slider(
-                    value: biologicalSexF,
+                    value: biologicalSexF.toDouble(),
                     thumbColor: Colors.white,
                     activeColor: thisColor,
                     inactiveColor: thisColor.withOpacity(0.3),
@@ -331,7 +332,7 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
                     }),
                 femaleLabel: 'Female-ness',
                 maleSlider: Slider(
-                    value: biologicalSexM,
+                    value: biologicalSexM.toDouble(),
                     thumbColor: Colors.white,
                     activeColor: thisColor,
                     inactiveColor: thisColor.withOpacity(0.3),
@@ -359,7 +360,7 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
                 fontSize: 22,
                 color: thisColor,
                 femaleSlider: Slider(
-                    value: sexAttractF,
+                    value: sexAttractF.toDouble(),
                     thumbColor: Colors.white,
                     activeColor: thisColor,
                     inactiveColor: thisColor.withOpacity(0.3),
@@ -370,7 +371,7 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
                     }),
                 femaleLabel: 'Femininity',
                 maleSlider: Slider(
-                    value: sexAttractM,
+                    value: sexAttractM.toDouble(),
                     thumbColor: Colors.white,
                     activeColor: thisColor,
                     inactiveColor: thisColor.withOpacity(0.3),
@@ -399,7 +400,7 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
                 fontSize: 18,
                 color: thisColor,
                 femaleSlider: Slider(
-                    value: romanceAttractF,
+                    value: romanceAttractF.toDouble(),
                     thumbColor: Colors.white,
                     activeColor: thisColor,
                     inactiveColor: thisColor.withOpacity(0.3),
@@ -410,7 +411,7 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
                     }),
                 femaleLabel: 'Femininity',
                 maleSlider: Slider(
-                    value: romanceAttractM,
+                    value: romanceAttractM.toDouble(),
                     thumbColor: Colors.white,
                     activeColor: thisColor,
                     inactiveColor: thisColor.withOpacity(0.3),

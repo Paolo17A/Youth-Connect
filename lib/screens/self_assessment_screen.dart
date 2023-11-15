@@ -49,7 +49,7 @@ class SelfAssessmentScreen extends StatelessWidget {
                     selfAssessmentButton(
                         'lib/assets/images/icons/Self Identification.png',
                         'SELF IDENTIFICATION', () {
-                      Navigator.pushNamed(context, '/selfIdentification');
+                      Navigator.pushNamed(context, '/newSelfIdentification');
                     })
                   ],
                 )),

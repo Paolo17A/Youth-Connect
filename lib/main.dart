@@ -1,24 +1,30 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:ywda/screens/add_emotion_entry_screen.dart';
 import 'package:ywda/screens/all_faqs_screen.dart';
 import 'package:ywda/screens/all_projects_screen.dart';
 import 'package:ywda/screens/all_organizations_screen.dart';
 import 'package:ywda/screens/edit_gender_screen.dart';
 import 'package:ywda/screens/edit_profile_screen.dart';
+import 'package:ywda/screens/emotional_tracker_screen.dart';
 import 'package:ywda/screens/forgot_password_screen.dart';
 import 'package:ywda/screens/gender_development_screen.dart';
 import 'package:ywda/screens/home_screen.dart';
 import 'package:ywda/screens/login_screen.dart';
 import 'package:ywda/screens/lusog_isip_screen.dart';
 import 'package:ywda/screens/mental_health_screen.dart';
+import 'package:ywda/screens/new_self_identification_screen.dart';
 import 'package:ywda/screens/overall_leaderboard_screen.dart';
-import 'package:ywda/screens/register_screen.dart';
+import 'package:ywda/screens/personal_shield_screen.dart';
 import 'package:ywda/screens/self_assessment_screen.dart';
 import 'package:ywda/screens/self_identification_category_screen.dart';
 import 'package:ywda/screens/self_identification_screen.dart';
 import 'package:ywda/screens/sign_up_screen.dart';
 import 'package:ywda/screens/skills_development_screen.dart';
 import 'package:ywda/screens/answer_survey_screen.dart';
+import 'package:ywda/screens/slave_of_socials_screen.dart';
+import 'package:ywda/screens/tolerance_test_screen.dart';
+import 'package:ywda/screens/twenty_statements_screen.dart';
 import 'package:ywda/screens/user_profile.dart';
 import 'package:ywda/screens/welcome_screen.dart';
 
@@ -36,7 +42,6 @@ class MyApp extends StatelessWidget {
     '/login': (context) => const LoginScreen(),
     '/signup': (context) => const SignUpScreen(),
     '/forgot': (context) => const ForgotPasswordScreen(),
-    //'/register': (context) => const RegisterScreen(),
     '/home': (context) => const HomeScreen(),
     '/assessment': (context) => const SelfAssessmentScreen(),
     '/organization': (context) => const AllOrganizationsScreen(),
@@ -48,12 +53,19 @@ class MyApp extends StatelessWidget {
     '/skills': (context) => const SkillsDevelopmentScreen(),
     '/answerSurvey': (context) => const AnswerSurveyScreen(),
     '/selfIdentification': (context) => const SelfIdentificationScreen(),
+    '/newSelfIdentification': (context) => const NewSelfIdentificationScreen(),
     '/selfIdentificationCategory': (context) =>
         const SelfIdentificationCategoryScreen(),
     '/genderDevelopment': (context) => const GenderDevelopmentScreen(),
     '/editGender': (context) => const EditGenderScreen(),
     '/overallLeaderboard': (context) => const OverallLeaderboardScreen(),
-    '/faqs': (context) => const AllFAQsScreen()
+    '/faqs': (context) => const AllFAQsScreen(),
+    '/toleranceTest': (context) => const ToleranceTestScreen(),
+    '/slaveOfSocials': (context) => const SlaveOfSocialsScreen(),
+    '/personalShield': (context) => const PersonalShieldScreen(),
+    '/twentyStatements': (context) => const TwentyStatementsScreen(),
+    '/addEmotion': (context) => const AddEmotionEntry(),
+    '/emotionTracker': (context) => const EmotionalTrackerScreen()
   };
 
   final ThemeData _themeData = ThemeData(
