@@ -8,6 +8,7 @@ import 'package:ywda/widgets/custom_containers_widget.dart';
 import 'package:ywda/widgets/custom_miscellaneous_widgets.dart';
 import 'package:ywda/widgets/custom_styling_widgets.dart';
 import 'package:ywda/widgets/custom_textfield_widget.dart';
+import 'package:ywda/widgets/youth_connect_textfield_widget.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -143,10 +144,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             _emailAddressController,
                             TextInputType.emailAddress)),
                         Gap(10),
-                        allPadding8Pix(customTextField(
-                            'Password',
-                            _passwordController,
-                            TextInputType.visiblePassword)),
+                        allPadding8Pix(YouthConnectTextField(
+                            text: 'Password',
+                            controller: _passwordController,
+                            textInputType: TextInputType.visiblePassword,
+                            displayPrefixIcon: null)),
                         _forgotPassword(),
                         //Gap(25),
                         authenticationSubmitButton(

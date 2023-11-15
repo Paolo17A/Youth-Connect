@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:ywda/screens/register_screen.dart';
 import 'package:ywda/utils/text_processor_util.dart';
 import 'package:ywda/widgets/custom_miscellaneous_widgets.dart';
+import 'package:ywda/widgets/youth_connect_textfield_widget.dart';
 
 import '../widgets/custom_containers_widget.dart';
 import '../widgets/custom_textfield_widget.dart';
@@ -214,17 +215,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: customTextField(
-                              'Password',
-                              _passwordController,
-                              TextInputType.visiblePassword),
+                          child: YouthConnectTextField(
+                              text: 'Password',
+                              controller: _passwordController,
+                              textInputType: TextInputType.visiblePassword,
+                              displayPrefixIcon: null),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: customTextField(
-                              'Confirm Password',
-                              _confirmPasswordController,
-                              TextInputType.visiblePassword),
+                          child: YouthConnectTextField(
+                              text: 'Confirm Password',
+                              controller: _confirmPasswordController,
+                              textInputType: TextInputType.visiblePassword,
+                              displayPrefixIcon: null),
                         ),
                         const SizedBox(height: 50),
                         Padding(
