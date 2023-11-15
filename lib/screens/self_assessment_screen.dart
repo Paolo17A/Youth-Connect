@@ -40,7 +40,7 @@ class SelfAssessmentScreen extends StatelessWidget {
                     selfAssessmentButton('lib/assets/images/icons/Bread.png',
                         'GENDER DEVELOPMENT', () {
                       Navigator.of(context).pushNamed('/genderDevelopment');
-                    }),
+                    }, size: 18),
                     selfAssessmentButton(
                         'lib/assets/images/icons/icons-brain.png',
                         'MENTAL HEALTH', () async {

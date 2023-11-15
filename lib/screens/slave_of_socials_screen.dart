@@ -185,7 +185,7 @@ class _SlaveOfSocialsScreenState extends State<SlaveOfSocialsScreen> {
                         onPressed: () {
                           selfAssessmentInstructionDialogue(
                               context,
-                              'Answer the following as truthfully as possible.',
+                              'Long press a statement to answer the following as truthfully as possible.',
                               'Score 2 if the Statement is always true, \n\n1 if the statement is sometimes true, \n\n and 0 if the statement never true.');
                         },
                         icon: Icon(Icons.help_outline_rounded))

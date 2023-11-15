@@ -35,7 +35,12 @@ class _HomeScreenState extends State<HomeScreen> {
       final projects =
           await FirebaseFirestore.instance.collection('projects').get();
       allProjects = projects.docs;
-
+      allProjects = allProjects.reversed.where((project) {
+        final projectData = project.data() as Map<dynamic, dynamic>;
+        Timestamp dateEnd = projectData['projectDateEnd'];
+        DateTime projectDateEnd = dateEnd.toDate();
+        return projectDateEnd.isAfter(DateTime.now());
+      }).toList();
       filteredProjects = allProjects.where((project) {
         final projectData = project.data() as Map<dynamic, dynamic>;
         List<dynamic> participants = projectData['participants'];
@@ -109,8 +114,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     child: Text(
                         _viewingAllProjects
-                            ? 'Joined\nProjects'
-                            : 'All\nProjects',
+                            ? 'View\nJoined Projects'
+                            : 'View\nAll Projects',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: Colors.black,
@@ -139,16 +144,28 @@ class _HomeScreenState extends State<HomeScreen> {
                   allProjects[index].data() as Map<dynamic, dynamic>;
               String title = project['title'];
               String content = project['content'];
-              Timestamp projectDate = project['projectDate'];
-              DateTime dateAnnounced = projectDate.toDate();
+              Timestamp dateAnnounced = project['dateAdded'];
               String formattedDateAnnounced =
-                  DateFormat('dd MMM yyyy').format(dateAnnounced);
+                  DateFormat('dd MMM yyyy').format(dateAnnounced.toDate());
+              Timestamp dateStart = project['projectDate'];
+              String formattedDateStart =
+                  DateFormat('dd MMM yyyy').format(dateStart.toDate());
+              Timestamp dateEnd = project['projectDateEnd'];
+              String formattedDateEnd =
+                  DateFormat('dd MMM yyyy').format(dateEnd.toDate());
               List<dynamic> imageURLs = project['imageURLs'];
               List<dynamic> participants = project['participants'];
               return GestureDetector(
                   onTap: () {},
-                  child: projectEntryContainer(allProjects[index].id, imageURLs,
-                      formattedDateAnnounced, title, content, participants));
+                  child: projectEntryContainer(
+                      allProjects[index].id,
+                      imageURLs,
+                      formattedDateAnnounced,
+                      formattedDateStart,
+                      formattedDateEnd,
+                      title,
+                      content,
+                      participants));
             })
         : Center(
             child: Text('NO PROJECTS YET',
@@ -166,10 +183,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   filteredProjects[index].data() as Map<dynamic, dynamic>;
               String title = project['title'];
               String content = project['content'];
-              Timestamp projectDate = project['projectDate'];
-              DateTime dateAnnounced = projectDate.toDate();
+              Timestamp dateAnnounced = project['dateAdded'];
+
               String formattedDateAnnounced =
-                  DateFormat('dd MMM yyyy').format(dateAnnounced);
+                  DateFormat('dd MMM yyyy').format(dateAnnounced.toDate());
+              Timestamp dateStart = project['projectDate'];
+              String formattedDateStart =
+                  DateFormat('dd MMM yyyy').format(dateStart.toDate());
+              Timestamp dateEnd = project['projectDateEnd'];
+              String formattedDateEnd =
+                  DateFormat('dd MMM yyyy').format(dateEnd.toDate());
               List<dynamic> imageURLs = project['imageURLs'];
               List<dynamic> participants = project['participants'];
               return GestureDetector(
@@ -178,6 +201,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       filteredProjects[index].id,
                       imageURLs,
                       formattedDateAnnounced,
+                      formattedDateStart,
+                      formattedDateEnd,
                       title,
                       content,
                       participants));
@@ -191,6 +216,8 @@ class _HomeScreenState extends State<HomeScreen> {
       String projectID,
       List<dynamic> imageURLs,
       String formattedDateAnnounced,
+      String formattedDateStart,
+      String formattedDateEnd,
       String title,
       String content,
       List<dynamic> participants) {
@@ -206,7 +233,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 _projectContentWidget(content),
                 if (imageURLs.isNotEmpty)
                   _projectImagesContainerWidget(imageURLs),
-                _projectJoinButtonWidget(projectID, participants)
+                _projectJoinButtonWidget(projectID, participants,
+                    formattedDateStart, formattedDateEnd)
               ],
             )));
   }
@@ -258,25 +286,38 @@ class _HomeScreenState extends State<HomeScreen> {
               scrollDirection: Axis.horizontal,
               itemCount: imageURLs.length,
               itemBuilder: (context, index) {
-                return Container(
-                    decoration: BoxDecoration(
-                        color: Colors.black, border: Border.all()),
-                    child: Image.network(imageURLs[index]));
+                return Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: Container(
+                      decoration: BoxDecoration(border: Border.all()),
+                      child: Image.network(imageURLs[index])),
+                );
               }),
         ),
       ),
     );
   }
 
-  Widget _projectJoinButtonWidget(
-      String projectID, List<dynamic> participants) {
+  Widget _projectJoinButtonWidget(String projectID, List<dynamic> participants,
+      String formattedDateStart, String formattedDateEnd) {
     String myUID = FirebaseAuth.instance.currentUser!.uid;
     bool isParticipating = participants.contains(myUID);
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Date Start: $formattedDateStart',
+                  style: GoogleFonts.inter(
+                      textStyle: TextStyle(color: Colors.black, fontSize: 15))),
+              Text('Date End: $formattedDateEnd',
+                  style: GoogleFonts.inter(
+                      textStyle: TextStyle(color: Colors.black, fontSize: 15)))
+            ],
+          ),
           ElevatedButton(
               onPressed: () {
                 if (isParticipating) {

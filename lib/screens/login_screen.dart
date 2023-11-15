@@ -147,10 +147,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             'Password',
                             _passwordController,
                             TextInputType.visiblePassword)),
-                        Gap(25),
+                        _forgotPassword(),
+                        //Gap(25),
                         authenticationSubmitButton(
                             'SIGN IN', _loginUser, false),
-                        _forgotPassword(),
                         Gap(30),
                         _dontHaveAccount(),
                       ],
@@ -182,31 +182,19 @@ class _LoginScreenState extends State<LoginScreen> {
         padding: const EdgeInsets.all(13),
         child: Row(
           children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.3,
-              child: Text(
-                'Forgot Password?',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.poppins(
-                    textStyle: const TextStyle(fontSize: 13)),
-              ),
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.25,
-              child: TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamed('/forgot');
-                  },
-                  child: Text(
-                    'Click Here',
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.poppins(
-                        textStyle: const TextStyle(
-                            fontSize: 13,
-                            decoration: TextDecoration.underline,
-                            fontWeight: FontWeight.bold)),
-                  )),
-            )
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/forgot');
+                },
+                child: Text(
+                  'Forgot Password?',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.poppins(
+                      textStyle: const TextStyle(
+                          fontSize: 13,
+                          decoration: TextDecoration.underline,
+                          fontWeight: FontWeight.bold)),
+                ))
           ],
         ));
   }

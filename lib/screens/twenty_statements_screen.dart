@@ -117,7 +117,7 @@ class _TwentyStatementsScreenState extends State<TwentyStatementsScreen> {
                                   selfAssessmentInstructionDialogue(
                                       context,
                                       'Complete the Twenty-Statement Survey below.',
-                                      'Write down the first statements that came to your mind upon hearing the phrase "I am."');
+                                      'Long press an entry to write down the first statements that came to your mind upon hearing the phrase "I am."');
                                 },
                                 icon: Icon(Icons.help_outline_rounded))
                           ],

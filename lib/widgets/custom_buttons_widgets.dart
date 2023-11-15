@@ -8,7 +8,7 @@ Widget authenticationSubmitButton(
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 10),
     child: Row(
-      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
           height: 40,

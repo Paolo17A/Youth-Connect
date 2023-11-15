@@ -82,7 +82,15 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           return false;
         },
         child: Scaffold(
-          appBar: AppBar(elevation: 0),
+          appBar: AppBar(elevation: 0, actions: [
+            Transform.scale(
+                scale: 1.5,
+                child: IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/edit');
+                    },
+                    icon: Icon(Icons.settings_outlined)))
+          ]),
           bottomNavigationBar: bottomNavigationBar(context, 3),
           drawer: appDrawer(context),
           body: SafeArea(
@@ -96,45 +104,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             Padding(
                               padding:
                                   const EdgeInsets.symmetric(vertical: 8.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.3),
-                                  SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.3,
-                                      child: _buildProfileImage()),
-                                  Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.3,
-                                      //color: Colors.red,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 5),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            Transform.scale(
-                                              scale: 1.5,
-                                              child: IconButton(
-                                                onPressed: () {
-                                                  Navigator.of(context)
-                                                      .pushNamed('/edit');
-                                                },
-                                                icon: Icon(
-                                                    Icons.settings_outlined),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ))
-                                ],
-                              ),
+                              child: _buildProfileImage(),
                             ),
                             SizedBox(
                               width: MediaQuery.of(context).size.width * 0.9,

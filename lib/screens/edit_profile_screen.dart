@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -281,15 +282,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               if (_imageFile == null && _profileImageURL != '')
                                 _removeCurrentPictureWidget(),
                               _uploadProfilePictureWidget(),
-                              const SizedBox(height: 20),
-                              _fullNameWidget(),
+                              Gap(20),
+                              _firstNameWidget(),
+                              _middleNameWidget(),
+                              _lastNameWidget(),
                               _birthdayWidget(),
                               _cityWidget(),
                               _genderWidgets(),
                               _civilStatusWidgets(),
                               //_categoryWidgets(),
                               _schoolWidget(),
-                              const SizedBox(height: 40),
+                              Gap(40),
                               ElevatedButton(
                                   onPressed: _updateUserProfile,
                                   child: const Text('SAVE CHANGES'))
@@ -351,7 +354,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         child: const Text('Upload Profile Picture'));
   }
 
-  Widget _fullNameWidget() {
+  Widget _firstNameWidget() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -361,6 +364,35 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           ]),
           customTextField(
               'First Name', _firstNameController, TextInputType.name),
+        ],
+      ),
+    );
+  }
+
+  Widget _middleNameWidget() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          Row(children: [
+            Text('Middle Name', style: GoogleFonts.poppins()),
+          ]),
+          customTextField(
+              'Middle Name', _middlenameController, TextInputType.name),
+        ],
+      ),
+    );
+  }
+
+  Widget _lastNameWidget() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          Row(children: [
+            Text('Last Name', style: GoogleFonts.poppins()),
+          ]),
+          customTextField('Last Name', _lastNameController, TextInputType.name),
         ],
       ),
     );

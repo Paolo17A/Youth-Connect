@@ -189,7 +189,7 @@ class _ToleranceTestScreenState extends State<ToleranceTestScreen> {
                           selfAssessmentInstructionDialogue(
                               context,
                               'Assume that you are faced which the following situations. How are you inclined to react? (write your most probable reaction given your mood and temper, not one which you think should be an ideal reaction)',
-                              'HA - Highly Affected which is means you are most inclined to be irritated, scandalized or to keep a grudge or to lose your temper\n\nSA - Slightly affected may be hurt or slightly irritated but not a point of being scandalized or keeping grudges or losing temper\n\nNA - Not Affected at all or you don’t give a damn.');
+                              'HA - Highly Affected which is means you are most inclined to be irritated, scandalized or to keep a grudge or to lose your temper\n\nSA - Slightly affected may be hurt or slightly irritated but not a point of being scandalized or keeping grudges or losing temper\n\nNA - Not Affected at all or you don’t give a damn. \n\n Long press a statement to answer it.');
                         },
                         icon: Icon(Icons.help_outline_rounded))
                   ],

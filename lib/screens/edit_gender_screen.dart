@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ywda/widgets/custom_buttons_widgets.dart';
+import 'package:ywda/widgets/custom_containers_widget.dart';
 
 class EditGenderScreen extends StatefulWidget {
   const EditGenderScreen({super.key});
@@ -199,40 +200,80 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
     return 'BISEXUAL';
   }
 
+  String resultExplanation(String result) {
+    if (result == 'TWO-SPIRIT') {
+      return 'A cultural term used by indigenous North Americans, describing someone who has both female and male spirit. You may see this referred to in the acronym LGBTQIA2SP. The 2SP stands for \'two spirit\'.';
+    }
+    if (result == 'GENDERQUEER') {
+      return 'Someone who identifies outside the gender binary.';
+    }
+    if (result == 'BUTCH') {
+      return 'A term used to describe someone who exhibits stereotypically masculine appearance or behaviour. In particular, a female identified person with a more masculine appearance and presentation.';
+    }
+    if (result == 'FEMME') {
+      return 'A term used to describe a feminine identified gender expression.';
+    }
+    if (result == 'ANDROGYNOUS') {
+      return 'Not identifying as being either male or female, but as a mixture of the two.';
+    }
+    if (result == 'GENDER NEUTRAL') {
+      return 'Someone who doesn\'t identify with any gender identity.';
+    }
+    if (result == 'INTERSEX') {
+      return 'Someone who biology doesn\'t completely match the typical medical definitions of male or female. Intersex people may or may not identify as trans. Doctors estimate around 1 in 100 babies are, to some degree, intersex.';
+    }
+    if (result == 'MtF FEMALE') {
+      return 'A trans woman - someone who has transitioned from "male to female"';
+    }
+    if (result == 'ASEX') {
+      return 'Someone who doesn’t experience sexual attraction.';
+    }
+    if (result == 'MALE') {
+      return 'Someone sexually attracted to women';
+    }
+    if (result == 'FEMALE') {
+      return 'Someone sexually attracted to men';
+    }
+    if (result == 'STRAIGHT') {
+      return 'When someone is sexually attracted to people of a different gender. See heterosexual.';
+    }
+    if (result == 'BISEXUAL') {
+      return 'Sexual attraction to people of two or more genders.';
+    }
+    if (result == 'PANSEXUAL') {
+      return 'Someone who is sexually or romantically attracted to people of all gender identities.';
+    }
+    if (result == 'AGENDER') {
+      return 'Someone who doesn’t identify with any gender.';
+    }
+    return 'N/A';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
-            child: Stack(
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(
-              vertical: MediaQuery.of(context).size.height * 0.05),
-          child: Center(
-            child: SingleChildScrollView(
-              child: Column(children: [
-                _genderIdentityContainer(),
-                _genderExpressionContainer(),
-                _biologicalSexContainer(),
-                _sexualAttractionContainer(),
-                _romanticAttractionContainer(),
-                genderDevelopmentButton('SAVE', () => saveGenderDevelopment()),
-                const SizedBox(height: 15)
-              ]),
-            ),
-          ),
-        ),
-        if (_isLoading)
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            color: Colors.black.withOpacity(0.5),
-            child: const Center(
-              child: CircularProgressIndicator(),
-            ),
-          )
-      ],
-    )));
+            child: stackedLoadingContainer(
+                context,
+                _isLoading,
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      vertical: MediaQuery.of(context).size.height * 0.05),
+                  child: Center(
+                    child: SingleChildScrollView(
+                      child: Column(children: [
+                        _genderIdentityContainer(),
+                        _genderExpressionContainer(),
+                        _biologicalSexContainer(),
+                        _sexualAttractionContainer(),
+                        _romanticAttractionContainer(),
+                        genderDevelopmentButton(
+                            'SAVE', () => saveGenderDevelopment()),
+                        const SizedBox(height: 15)
+                      ]),
+                    ),
+                  ),
+                ))));
   }
 
   Widget _genderIdentityContainer() {
@@ -242,6 +283,8 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
         _dashedContainer(
             _genderInteractables(
                 label: 'Gender Identity',
+                explanation:
+                    'How you, in your head, define your gender, based on how much you align (or don\'t align) with what you understand to be the options for gender.',
                 color: thisColor,
                 femaleSlider: Slider(
                     value: genderIdentityF.toDouble(),
@@ -280,6 +323,8 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
         _dashedContainer(
           _genderInteractables(
               label: 'Gender Expression',
+              explanation:
+                  'The ways you present gender, through your actions, dress, and demeanor, and how those presentations are interpreted based on gender norms.',
               color: Color.fromARGB(255, 206, 194, 89),
               femaleSlider: Slider(
                   value: genderExpressionF.toDouble(),
@@ -319,6 +364,8 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
         _dashedContainer(
             _genderInteractables(
                 label: 'Biological Sex',
+                explanation:
+                    'The physical sex characteristics you\'re born with  and develop, including genitalia, body shape, voice pitch, body hair, hormones, chromosomes, etc.',
                 color: thisColor,
                 femaleSlider: Slider(
                     value: biologicalSexF.toDouble(),
@@ -357,6 +404,7 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
         _dashedContainer(
             _genderInteractables(
                 label: 'Sexually Attracted to',
+                explanation: '',
                 fontSize: 22,
                 color: thisColor,
                 femaleSlider: Slider(
@@ -397,6 +445,7 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
         _dashedContainer(
             _genderInteractables(
                 label: 'Romantically Attracted to',
+                explanation: '',
                 fontSize: 18,
                 color: thisColor,
                 femaleSlider: Slider(
@@ -457,6 +506,7 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
 
   Widget _genderInteractables(
       {required String label,
+      String explanation = '',
       required Color color,
       required Slider femaleSlider,
       required String femaleLabel,
@@ -478,10 +528,13 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
                           fontWeight: FontWeight.bold,
                           color: color))),
             ),
-            Transform.scale(
-                scale: 1.3,
-                child: IconButton(
-                    onPressed: () {}, icon: Icon(Icons.help_outline)))
+            if (explanation.isNotEmpty)
+              Transform.scale(
+                  scale: 1.3,
+                  child: IconButton(
+                      onPressed: () =>
+                          displayExplanationDialog(label, explanation),
+                      icon: Icon(Icons.help_outline)))
           ],
         ),
         Row(
@@ -521,7 +574,9 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
               child: Row(
                 children: [
                   ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () => displayExplanationDialog(
+                          calculatedResult,
+                          resultExplanation(calculatedResult)),
                       style: ElevatedButton.styleFrom(backgroundColor: color),
                       child: Text(calculatedResult)),
                 ],
@@ -531,5 +586,30 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
         )
       ],
     );
+  }
+
+  void displayExplanationDialog(String name, String explanation) {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            content: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.95,
+              height: 300,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(name,
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.inter(
+                          fontWeight: FontWeight.bold, fontSize: 25)),
+                  //Gap(30),
+                  Text(explanation,
+                      //textAlign: TextAlign.justify,
+                      style: GoogleFonts.inter(fontSize: 20))
+                ],
+              ),
+            )));
   }
 }
