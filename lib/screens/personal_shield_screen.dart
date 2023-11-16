@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:widget_mask/widget_mask.dart';
 import 'package:ywda/widgets/custom_containers_widget.dart';
 import 'package:ywda/widgets/custom_styling_widgets.dart';
 
@@ -150,20 +149,38 @@ class _PersonalShieldScreenState extends State<PersonalShieldScreen> {
                           border: Border.all(color: Colors.black, width: 0.2),
                           borderRadius: BorderRadius.circular(25),
                           color: Color.fromARGB(255, 219, 219, 219)),
-                      child: Center(
-                        child: Stack(
-                          children: [
-                            Image.asset(
-                                'lib/assets/images/shield/PersonalShield.png'),
-                            _somethingIDoWell(),
-                            _greatestCharacterStrength(),
-                            _bestCompliment(),
-                            _worstCharacterFlaw(),
-                            _whatMakesMeUnique(),
-                            _favoritePeople(),
-                            _viewEntriesCenterShield()
-                          ],
-                        ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Stack(
+                            children: [
+                              Image.asset(
+                                  'lib/assets/images/shield/PersonalShield.png'),
+                              _somethingIDoWell(),
+                              _greatestCharacterStrength(),
+                              _bestCompliment(),
+                              _worstCharacterFlaw(),
+                              _whatMakesMeUnique(),
+                              _favoritePeople(),
+                              //_viewEntriesCenterShield()
+                            ],
+                          ),
+                          ElevatedButton(
+                              onPressed: () => showsectionSelectionModal(),
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 175, 210, 244),
+                                  foregroundColor: Colors.black,
+                                  disabledBackgroundColor:
+                                      Color.fromARGB(255, 153, 165, 177),
+                                  disabledForegroundColor:
+                                      Color.fromARGB(255, 132, 126, 126),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(40))),
+                              child: Text('VIEW ENTRIES',
+                                  style: GoogleFonts.poppins(
+                                      fontWeight: FontWeight.bold)))
+                        ],
                       ),
                     ),
                   ],
@@ -173,7 +190,8 @@ class _PersonalShieldScreenState extends State<PersonalShieldScreen> {
   }
 
   Widget _somethingIDoWell() {
-    if (!personalShieldEntries.containsKey('somethingIDoWell')) {
+    return Image.asset('lib/assets/images/shield/somethingIDoWell.png');
+    /*if (!personalShieldEntries.containsKey('somethingIDoWell')) {
       return Image.asset('lib/assets/images/shield/somethingIDoWell.png');
     } else {
       return WidgetMask(
@@ -189,11 +207,13 @@ class _PersonalShieldScreenState extends State<PersonalShieldScreen> {
             ],
           ),
           child: Image.asset('lib/assets/images/shield/upperleft.png'));
-    }
+    }*/
   }
 
   Widget _greatestCharacterStrength() {
-    if (!personalShieldEntries.containsKey('myGreatestCharacterStrength')) {
+    return Image.asset(
+        'lib/assets/images/shield/myGreatestCharacterStrength.png');
+    /*if (!personalShieldEntries.containsKey('myGreatestCharacterStrength')) {
       return Image.asset(
           'lib/assets/images/shield/myGreatestCharacterStrength.png');
     } else {
@@ -211,11 +231,12 @@ class _PersonalShieldScreenState extends State<PersonalShieldScreen> {
             ],
           ),
           child: Image.asset('lib/assets/images/shield/upperright.png'));
-    }
+    }*/
   }
 
   Widget _bestCompliment() {
-    if (!personalShieldEntries.containsKey('bestCompliment')) {
+    return Image.asset('lib/assets/images/shield/bestCompliment.png');
+    /*if (!personalShieldEntries.containsKey('bestCompliment')) {
       return Image.asset('lib/assets/images/shield/bestCompliment.png');
     } else {
       return WidgetMask(
@@ -231,11 +252,12 @@ class _PersonalShieldScreenState extends State<PersonalShieldScreen> {
             ],
           ),
           child: Image.asset('lib/assets/images/shield/left.png'));
-    }
+    }*/
   }
 
   Widget _worstCharacterFlaw() {
-    if (!personalShieldEntries.containsKey('worstCharacterFlaw')) {
+    return Image.asset('lib/assets/images/shield/worstCharacterFlaw.png');
+    /*if (!personalShieldEntries.containsKey('worstCharacterFlaw')) {
       return Image.asset('lib/assets/images/shield/worstCharacterFlaw.png');
     } else {
       return WidgetMask(
@@ -251,11 +273,12 @@ class _PersonalShieldScreenState extends State<PersonalShieldScreen> {
             ],
           ),
           child: Image.asset('lib/assets/images/shield/right.png'));
-    }
+    }*/
   }
 
   Widget _whatMakesMeUnique() {
-    if (!personalShieldEntries.containsKey('whatMakesMeUnique')) {
+    return Image.asset('lib/assets/images/shield/whatMakesMeUnique.png');
+    /*if (!personalShieldEntries.containsKey('whatMakesMeUnique')) {
       return Image.asset('lib/assets/images/shield/whatMakesMeUnique.png');
     } else {
       return WidgetMask(
@@ -271,11 +294,12 @@ class _PersonalShieldScreenState extends State<PersonalShieldScreen> {
             ],
           ),
           child: Image.asset('lib/assets/images/shield/lowerleft.png'));
-    }
+    }*/
   }
 
   Widget _favoritePeople() {
-    if (!personalShieldEntries.containsKey('favoritePeople')) {
+    return Image.asset('lib/assets/images/shield/favoritePeople.png');
+    /*if (!personalShieldEntries.containsKey('favoritePeople')) {
       return Image.asset('lib/assets/images/shield/favoritePeople.png');
     } else {
       return WidgetMask(
@@ -291,7 +315,7 @@ class _PersonalShieldScreenState extends State<PersonalShieldScreen> {
             ],
           ),
           child: Image.asset('lib/assets/images/shield/lowerright.png'));
-    }
+    }*/
   }
 
   Widget _viewEntriesCenterShield() {

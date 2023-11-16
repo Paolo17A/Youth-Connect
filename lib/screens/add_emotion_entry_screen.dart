@@ -155,7 +155,8 @@ class _AddEmotionEntryState extends State<AddEmotionEntry> {
         Row(
           children: [
             IconButton(
-                onPressed: () {},
+                onPressed: () =>
+                    Navigator.of(context).pushNamed('/emotionTracker'),
                 icon: Image.asset('lib/assets/images/icons/brain.png')),
             IconButton(
                 onPressed: () {

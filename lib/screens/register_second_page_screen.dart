@@ -180,6 +180,8 @@ class _RegisterSecondPageScreenState extends State<RegisterSecondPageScreen> {
         'toleranceTest': {'entries': [], 'rating': ''},
         'slaveOfSocials': {'entries': [], 'rating': ''},
         'twentyStatements': {'entries': [], 'rating': ''},
+        'hasTwentyStatementsBadge': false,
+        'hasPersonalShieldBadge': false,
         'personalShield': {},
         'profileImageURL': '',
         'genderDevelopment': {
