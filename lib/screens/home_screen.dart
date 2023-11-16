@@ -22,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _viewingAllProjects = true;
   List<DocumentSnapshot> allProjects = [];
   List<DocumentSnapshot> filteredProjects = [];
+  Map<String, String> projectOrganizers = {}; //projectID - organizationName
 
   @override
   void didChangeDependencies() {
@@ -35,6 +36,25 @@ class _HomeScreenState extends State<HomeScreen> {
       final projects =
           await FirebaseFirestore.instance.collection('projects').get();
       allProjects = projects.docs;
+      for (var project in allProjects) {
+        final projectData = project.data() as Map<dynamic, dynamic>;
+        final organizer = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(projectData['organizer'])
+            .get();
+        final organizerData = organizer.data() as Map<dynamic, dynamic>;
+        final organizerType = organizerData['userType'];
+        if (organizerType == 'ORG HEAD') {
+          final organization = await FirebaseFirestore.instance
+              .collection('orgs')
+              .doc(organizerData['organization'])
+              .get();
+          final orgData = organization.data() as Map<dynamic, dynamic>;
+          projectOrganizers[project.id] = orgData['name'];
+        } else {
+          projectOrganizers[project.id] = 'YDA PROJECT';
+        }
+      }
       allProjects = allProjects.reversed.where((project) {
         final projectData = project.data() as Map<dynamic, dynamic>;
         Timestamp dateEnd = projectData['projectDateEnd'];
@@ -140,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
             itemCount: allProjects.length,
             itemBuilder: (context, index) {
               //  Local variables for better readability
-              Map<dynamic, dynamic> project =
+              final project =
                   allProjects[index].data() as Map<dynamic, dynamic>;
               String title = project['title'];
               String content = project['content'];
@@ -155,6 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   DateFormat('dd MMM yyyy').format(dateEnd.toDate());
               List<dynamic> imageURLs = project['imageURLs'];
               List<dynamic> participants = project['participants'];
+              String organizer = projectOrganizers[allProjects[index].id]!;
               return GestureDetector(
                   onTap: () {},
                   child: projectEntryContainer(
@@ -165,7 +186,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       formattedDateEnd,
                       title,
                       content,
-                      participants));
+                      participants,
+                      organizer));
             })
         : Center(
             child: Text('NO PROJECTS YET',
@@ -195,6 +217,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   DateFormat('dd MMM yyyy').format(dateEnd.toDate());
               List<dynamic> imageURLs = project['imageURLs'];
               List<dynamic> participants = project['participants'];
+              String organizer = projectOrganizers[allProjects[index].id]!;
               return GestureDetector(
                   onTap: () {},
                   child: projectEntryContainer(
@@ -205,7 +228,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       formattedDateEnd,
                       title,
                       content,
-                      participants));
+                      participants,
+                      organizer));
             })
         : Center(
             child: Text('YOU HAVE NOT JOINED ANY PROJECTS YET',
@@ -220,7 +244,8 @@ class _HomeScreenState extends State<HomeScreen> {
       String formattedDateEnd,
       String title,
       String content,
-      List<dynamic> participants) {
+      List<dynamic> participants,
+      String projectOrganizer) {
     return Padding(
         padding: EdgeInsets.all(10),
         child: Container(
@@ -229,6 +254,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               children: [
                 _projectDateWidget(formattedDateAnnounced),
+                _projectOrganizerWidget(projectOrganizer),
                 _projectTitleWidget(title),
                 _projectContentWidget(content),
                 if (imageURLs.isNotEmpty)
@@ -245,6 +271,19 @@ class _HomeScreenState extends State<HomeScreen> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(formattedDateAnnounced,
+              style: GoogleFonts.inter(
+                  textStyle: TextStyle(color: Colors.black, fontSize: 15))),
+        ),
+      ],
+    );
+  }
+
+  Widget _projectOrganizerWidget(String organizer) {
+    return Row(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(organizer,
               style: GoogleFonts.inter(
                   textStyle: TextStyle(color: Colors.black, fontSize: 15))),
         ),
