@@ -38,18 +38,7 @@ Drawer appDrawer(BuildContext context) {
                   },
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: ListTile(
-                  leading: const Icon(Icons.info,
-                      color: Color.fromARGB(255, 21, 57, 119)),
-                  title: Text('About Us', style: _textStyle()),
-                  onTap: () {
-                    Navigator.pop(context);
-                    //Navigator.pushNamed(context, '/about');
-                  },
-                ),
-              ),
+             
             ],
           ),
         ),

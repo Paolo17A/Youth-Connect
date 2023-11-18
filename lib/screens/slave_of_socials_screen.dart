@@ -112,7 +112,7 @@ class _SlaveOfSocialsScreenState extends State<SlaveOfSocialsScreen> {
                     Column(
                       children: [
                         Text(
-                          'Your score is $SoSScore. you have a $SoSLevel tolerance.',
+                          'Your score is $SoSScore. $SoSLevel.',
                           style: GoogleFonts.inter(
                               fontWeight: FontWeight.bold, fontSize: 25),
                         ),
