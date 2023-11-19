@@ -28,13 +28,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _middleNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
-  String _gender = 'MALE';
-  String _civilStatus = 'SINGLE';
+  String _gender = '';
+  String _civilStatus = '';
   DateTime? _selectedDate;
   int? age;
   final TextEditingController _cityController = TextEditingController();
-  final TextEditingController _specialGenderController =
-      TextEditingController();
+  String _residingCity = '';
+  //final TextEditingController _specialGenderController =
+  //TextEditingController();
 
   @override
   void dispose() {
@@ -43,7 +44,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _middleNameController.dispose();
     _lastNameController.dispose();
     _cityController.dispose();
-    _specialGenderController.dispose();
+    //_specialGenderController.dispose();
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -78,7 +79,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         _middleNameController.text.isEmpty ||
         _lastNameController.text.isEmpty ||
         _selectedDate == null ||
-        _cityController.text.isEmpty) {
+        _residingCity.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Please fill up all the fields.')));
       return;
@@ -90,11 +91,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return;
     }
 
-    if (_gender == 'LET ME TYPE...' && _specialGenderController.text.isEmpty) {
+    /*if (_gender == 'LET ME TYPE...' && _specialGenderController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Please indicate your specific gender')));
       return;
-    }
+    }*/
 
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => RegisterSecondPageScreen(
@@ -104,12 +105,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
             firstName: _firstNameController.text,
             middleName: _middleNameController.text,
             lastName: _lastNameController.text,
-            gender: _gender == 'LET ME TYPE...'
-                ? _specialGenderController.text.trim()
-                : _gender,
+            gender: _gender,
             civilStatus: _civilStatus,
             birthday: _selectedDate!,
-            city: _cityController.text)));
+            city: _residingCity)));
   }
 
   @override
@@ -212,7 +211,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         'NON-BINARY',
         'TRANSGENDER',
         'INTERSEX',
-        'LET ME TYPE...',
         'PREFER NOT TO SAY'
       ], 'Gender', false),
       if (_gender == 'NON-BINARY')
@@ -226,7 +224,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         borderedTextContainer('Gender Description',
             'Someone whose biology doesn\'t completely match the typical medical definitions of male or female.',
             height: 65)
-      else if (_gender == 'LET ME TYPE...')
+      /*else if (_gender == 'LET ME TYPE...')
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -243,7 +241,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   'Gender', _specialGenderController, TextInputType.text),
             ],
           ),
-        ),
+        ),*/
     ]);
   }
 
@@ -303,15 +301,45 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Widget _municipality() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(children: [
-        const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            child: Row(children: [Text('Current Residing City')])),
-        customTextField(
-            'City/Municipality', _cityController, TextInputType.name)
-      ]),
-    );
+    return dropdownWidget(_residingCity, (selected) {
+      setState(() {
+        if (selected != null) {
+          _residingCity = selected;
+        }
+      });
+    }, [
+      'Alaminos',
+      'Bay',
+      'Biñan',
+      'Botocan',
+      'Cabuyao',
+      'Calamba',
+      'Camp Vicente Lim',
+      'Canlubang',
+      'Cavinti',
+      'College Los Baños',
+      'Famy',
+      'Kalayaan',
+      'Liliw',
+      'Los Baños',
+      'Luisiana',
+      'Lumban',
+      'Mabitac',
+      'Magdalena',
+      'Majayjay',
+      'Nagcarlan',
+      'Paete',
+      'Pagsanjan',
+      'Pakil',
+      'Pila',
+      'Rizal',
+      'San Pablo',
+      'San Pedro',
+      'Siniloan',
+      'Sta. Cruz',
+      'Sta. Maria',
+      'Sta. Rosa',
+      'Victoria'
+    ], 'Residing City', false);
   }
 }

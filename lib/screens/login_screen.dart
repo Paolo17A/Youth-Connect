@@ -7,7 +7,6 @@ import 'package:ywda/widgets/custom_buttons_widgets.dart';
 import 'package:ywda/widgets/custom_containers_widget.dart';
 import 'package:ywda/widgets/custom_miscellaneous_widgets.dart';
 import 'package:ywda/widgets/custom_styling_widgets.dart';
-import 'package:ywda/widgets/custom_textfield_widget.dart';
 import 'package:ywda/widgets/youth_connect_textfield_widget.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -80,20 +79,21 @@ class _LoginScreenState extends State<LoginScreen> {
       }
 
       //  Get the currentUserData
-      final currentUserData = await FirebaseFirestore.instance
+      final user = await FirebaseFirestore.instance
           .collection('users')
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .get();
+      final userData = user.data() as Map<dynamic, dynamic>;
 
       //  Check if the account has a userType parameter and create it if it doesn't.
-      if (!currentUserData.data()!.containsKey('userType')) {
+      if (!userData.containsKey('userType')) {
         FirebaseFirestore.instance
             .collection('users')
             .doc(FirebaseAuth.instance.currentUser!.uid)
             .update({'userType': 'CLIENT'});
 
         //  If the current user is an admin, display a mesaage.
-      } else if (currentUserData.data()!['userType'] == 'ADMIN') {
+      } else if (userData['userType'] == 'ADMIN') {
         scaffoldState.showSnackBar(
             SnackBar(content: Text('Only clients may access this app')));
         await FirebaseAuth.instance.signOut();
@@ -103,7 +103,51 @@ class _LoginScreenState extends State<LoginScreen> {
         return;
       }
 
-      if (currentUserData.data()!['accountInitialized'] == true) {
+      if (FirebaseAuth.instance.currentUser!.emailVerified == false) {
+        //  The user's data in Firestore has a dateEmailVerificationSent paramter.
+        if (userData.containsKey('dateEmailVerificationSent')) {
+          DateTime dateEmailVerificationSent =
+              (userData['dateEmailVerificationSent'] as Timestamp).toDate();
+          if (DateTime.now().difference(dateEmailVerificationSent).inMinutes <
+              50) {
+            scaffoldState.showSnackBar(SnackBar(
+                content: Text(
+                    'Please check your email for the email verification link.')));
+            setState(() {
+              _isLoading = false;
+            });
+          } else {
+            await FirebaseFirestore.instance
+                .collection('users')
+                .doc(FirebaseAuth.instance.currentUser!.uid)
+                .update({'dateEmailVerificationSent': DateTime.now()});
+            await FirebaseAuth.instance.currentUser!.sendEmailVerification();
+            scaffoldState.showSnackBar(SnackBar(
+                content: Text(
+                    'A new email verification link has been sent to your email.')));
+            setState(() {
+              _isLoading = false;
+            });
+          }
+        }
+        //  A dateEmailVerificationSent parameter does NOT yet exist.
+        else {
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .update({'dateEmailVerificationSent': DateTime.now()});
+          await FirebaseAuth.instance.currentUser!.sendEmailVerification();
+          scaffoldState.showSnackBar(SnackBar(
+              content: Text(
+                  'Please check your email for the email verification link.')));
+          setState(() {
+            _isLoading = false;
+          });
+        }
+        return;
+      }
+
+      if (userData['accountInitialized'] == true) {
         navigatorState.pushReplacementNamed('/home');
       } else {
         navigatorState.pushReplacementNamed('/register');
@@ -139,10 +183,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         _welcomeBack(),
-                        allPadding8Pix(customTextField(
-                            'Username or Email',
-                            _emailAddressController,
-                            TextInputType.emailAddress)),
+                        allPadding8Pix(YouthConnectTextField(
+                            text: 'Username or Email',
+                            controller: _emailAddressController,
+                            textInputType: TextInputType.emailAddress,
+                            displayPrefixIcon: null)),
                         Gap(10),
                         allPadding8Pix(YouthConnectTextField(
                             text: 'Password',

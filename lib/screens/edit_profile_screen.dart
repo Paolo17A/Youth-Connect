@@ -8,8 +8,9 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:ywda/widgets/custom_textfield_widget.dart';
+//import 'package:ywda/widgets/custom_textfield_widget.dart';
 import 'package:ywda/widgets/dropdown_widget.dart';
+import 'package:ywda/widgets/youth_connect_textfield_widget.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
@@ -20,13 +21,14 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   bool _isLoading = true;
+  bool _isEditing = false;
   File? _imageFile;
   late ImagePicker imagePicker;
   late String _profileImageURL;
   final _firstNameController = TextEditingController();
   final _middlenameController = TextEditingController();
   final _lastNameController = TextEditingController();
-  final _cityController = TextEditingController();
+  String _residingCity = '';
   DateTime? birthday;
   int age = 0;
   String _gender = '';
@@ -59,7 +61,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     _firstNameController.dispose();
     _middlenameController.dispose();
     _lastNameController.dispose();
-    _cityController.dispose();
+    //_cityController.dispose();
     _specialGenderController.dispose();
   }
 
@@ -80,7 +82,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ? currentUserData.data()!['middleName']
               : '';
 
-      _cityController.text = currentUserData.data()!.containsKey('city')
+      _lastNameController.text = currentUserData.data()!.containsKey('lastName')
+          ? currentUserData.data()!['lastName']
+          : '';
+
+      _residingCity = currentUserData.data()!.containsKey('city')
           ? currentUserData.data()!['city']
           : '';
 
@@ -134,6 +140,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     try {
       setState(() {
         _isLoading = true;
+        _isEditing = false;
       });
       await FirebaseFirestore.instance
           .collection('users')
@@ -142,7 +149,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         'firstName': _firstNameController.text,
         'middleName': _middlenameController.text,
         'lastName': _lastNameController.text,
-        'city': _cityController.text,
+        'city': _residingCity,
         'birthday': birthday,
         'gender': _gender == 'LET ME TYPE...'
             ? _specialGenderController.text.trim()
@@ -287,15 +294,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               _middleNameWidget(),
                               _lastNameWidget(),
                               _birthdayWidget(),
-                              _cityWidget(),
+                              _municipality(),
                               _genderWidgets(),
                               _civilStatusWidgets(),
                               //_categoryWidgets(),
                               _schoolWidget(),
                               Gap(40),
-                              ElevatedButton(
-                                  onPressed: _updateUserProfile,
-                                  child: const Text('SAVE CHANGES'))
+                              if (_isEditing)
+                                ElevatedButton(
+                                    onPressed: _updateUserProfile,
+                                    child: const Text('SAVE CHANGES'))
+                              else
+                                _editProfileButton(),
                             ]),
                       ),
                     ),
@@ -347,11 +357,29 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Widget _uploadProfilePictureWidget() {
-    return ElevatedButton(
-        onPressed: _pickImage,
-        style: ElevatedButton.styleFrom(
-            backgroundColor: const Color.fromARGB(255, 53, 113, 217)),
-        child: const Text('Upload Profile Picture'));
+    return SizedBox(
+      width: 200,
+      child: ElevatedButton(
+          onPressed: _pickImage,
+          style: ElevatedButton.styleFrom(
+              backgroundColor: const Color.fromARGB(255, 53, 113, 217)),
+          child: const Text('Upload Profile Picture')),
+    );
+  }
+
+  Widget _editProfileButton() {
+    return SizedBox(
+      width: 200,
+      child: ElevatedButton(
+          onPressed: () {
+            setState(() {
+              _isEditing = true;
+            });
+          },
+          style: ElevatedButton.styleFrom(
+              backgroundColor: const Color.fromARGB(255, 53, 113, 217)),
+          child: const Text('Edit Profile')),
+    );
   }
 
   Widget _firstNameWidget() {
@@ -362,8 +390,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           Row(children: [
             Text('First Name', style: GoogleFonts.poppins()),
           ]),
-          customTextField(
-              'First Name', _firstNameController, TextInputType.name),
+          YouthConnectTextField(
+              text: 'First Name',
+              controller: _firstNameController,
+              textInputType: TextInputType.name,
+              displayPrefixIcon: null,
+              enabled: _isEditing)
         ],
       ),
     );
@@ -377,8 +409,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           Row(children: [
             Text('Middle Name', style: GoogleFonts.poppins()),
           ]),
-          customTextField(
-              'Middle Name', _middlenameController, TextInputType.name),
+          YouthConnectTextField(
+              text: 'Middle Name',
+              controller: _middlenameController,
+              textInputType: TextInputType.name,
+              displayPrefixIcon: null,
+              enabled: _isEditing)
         ],
       ),
     );
@@ -392,22 +428,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           Row(children: [
             Text('Last Name', style: GoogleFonts.poppins()),
           ]),
-          customTextField('Last Name', _lastNameController, TextInputType.name),
+          YouthConnectTextField(
+              text: 'Last Name',
+              controller: _lastNameController,
+              textInputType: TextInputType.name,
+              displayPrefixIcon: null,
+              enabled: _isEditing)
         ],
       ),
-    );
-  }
-
-  Widget _cityWidget() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(children: [
-        Row(children: [
-          Text('Current Residing City', style: GoogleFonts.poppins()),
-        ]),
-        customTextField(
-            'City/Municipality', _cityController, TextInputType.name),
-      ]),
     );
   }
 
@@ -427,13 +455,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           Container(
             width: double.infinity,
             decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.05),
-                border: Border.all(color: Colors.black),
+                color: Colors.white.withOpacity(0.5),
+                border: Border.all(color: Colors.black, width: 0.5),
                 borderRadius: BorderRadius.circular(10)),
             child: TextButton(
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.transparent),
-                onPressed: () => _selectDate(context),
+                onPressed: () => _isEditing ? _selectDate(context) : null,
                 child: Row(
                   children: [
                     Text(
@@ -449,6 +477,72 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       ),
     );
   }
+
+  Widget _municipality() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          Row(children: [
+            Text('Current Residing City', style: GoogleFonts.poppins()),
+          ]),
+          dropdownWidget(_residingCity, (selected) {
+            setState(() {
+              if (selected != null) {
+                _residingCity = selected;
+              }
+            });
+          }, [
+            'Alaminos',
+            'Bay',
+            'Biñan',
+            'Botocan',
+            'Cabuyao',
+            'Calamba',
+            'Camp Vicente Lim',
+            'Canlubang',
+            'Cavinti',
+            'College Los Baños',
+            'Famy',
+            'Kalayaan',
+            'Liliw',
+            'Los Baños',
+            'Luisiana',
+            'Lumban',
+            'Mabitac',
+            'Magdalena',
+            'Majayjay',
+            'Nagcarlan',
+            'Paete',
+            'Pagsanjan',
+            'Pakil',
+            'Pila',
+            'Rizal',
+            'San Pablo',
+            'San Pedro',
+            'Siniloan',
+            'Sta. Cruz',
+            'Sta. Maria',
+            'Sta. Rosa',
+            'Victoria'
+          ], _residingCity, false, enabled: _isEditing),
+        ],
+      ),
+    );
+  }
+
+  /*Widget _cityWidget() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(children: [
+        Row(children: [
+          Text('Current Residing City', style: GoogleFonts.poppins()),
+        ]),
+        customTextField(
+            'City/Municipality', _residingCity, TextInputType.name),
+      ]),
+    );
+  }*/
 
   Widget _genderWidgets() {
     return Padding(
@@ -469,22 +563,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             'NON-BINARY',
             'TRANSGENDER',
             'INTERSEX',
-            'LET ME TYPE...',
             'PREFER NOT TO SAY'
-          ], fixedGenders.contains(_gender) ? _gender : 'LET ME TYPE...',
-              false),
-          if (_gender == 'LET ME TYPE...')
-            Column(
-              children: [
-                Row(
-                  children: [
-                    Text('Indicate Your Gender'),
-                  ],
-                ),
-                customTextField(
-                    'Gender', _specialGenderController, TextInputType.text),
-              ],
-            )
+          ], fixedGenders.contains(_gender) ? _gender : 'LET ME TYPE...', false,
+              enabled: _isEditing),
         ]));
   }
 
@@ -508,7 +589,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             'SINGLE-PARENTS',
             'WIDOWED',
             'SEPARATE'
-          ], _civilStatus, false),
+          ], _civilStatus, false, enabled: _isEditing),
         ]));
   }
 
@@ -516,9 +597,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     return Padding(
         padding: EdgeInsets.all(8),
         child: Column(children: [
-          Row(children: [
-            Text('Youth Category', style: GoogleFonts.poppins()),
-          ]),
+          Row(children: [Text('Youth Category', style: GoogleFonts.poppins())]),
           dropdownWidget(_selectedCategory != null ? _selectedCategory! : '',
               (selected) {
             setState(() {
@@ -600,8 +679,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   Widget _schoolWidget() {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: customTextField('School', _schoolController, TextInputType.name),
-    );
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Row(children: [Text('School', style: GoogleFonts.poppins())]),
+            YouthConnectTextField(
+                text: 'School',
+                controller: _schoolController,
+                textInputType: TextInputType.name,
+                displayPrefixIcon: null,
+                enabled: _isEditing),
+          ],
+        ));
   }
 }

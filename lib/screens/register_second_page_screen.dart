@@ -173,6 +173,7 @@ class _RegisterSecondPageScreenState extends State<RegisterSecondPageScreen> {
         'organization': _selectedOrgID,
         'orgPosition': _positionController.text,
         'school': _schoolController.text,
+        'dateEmailVerificationSent': DateTime.now(),
         'selfIdentification': {},
         'skillsDeveloped': {},
         'surveyAnswers': {},
