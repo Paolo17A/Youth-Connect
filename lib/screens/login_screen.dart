@@ -138,12 +138,13 @@ class _LoginScreenState extends State<LoginScreen> {
               .update({'dateEmailVerificationSent': DateTime.now()});
           await FirebaseAuth.instance.currentUser!.sendEmailVerification();
           scaffoldState.showSnackBar(SnackBar(
-              content: Text(
-                  'Please check your email for the email verification link.')));
+              content:
+                  Text('A verification link has been sent to your email.')));
           setState(() {
             _isLoading = false;
           });
         }
+        await FirebaseAuth.instance.signOut();
         return;
       }
 

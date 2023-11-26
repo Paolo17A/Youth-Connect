@@ -7,7 +7,6 @@ import 'package:ywda/widgets/custom_miscellaneous_widgets.dart';
 import 'package:ywda/widgets/youth_connect_textfield_widget.dart';
 
 import '../widgets/custom_containers_widget.dart';
-import '../widgets/custom_textfield_widget.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -203,15 +202,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: customTextField('Username',
-                              _usernameController, TextInputType.name),
+                          child: YouthConnectTextField(
+                              text: 'Username',
+                              controller: _usernameController,
+                              textInputType: TextInputType.name,
+                              displayPrefixIcon: null),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: customTextField(
-                              'Email Address',
-                              _emailAddressController,
-                              TextInputType.emailAddress),
+                          child: YouthConnectTextField(
+                              text: 'Email Address',
+                              controller: _emailAddressController,
+                              textInputType: TextInputType.emailAddress,
+                              displayPrefixIcon: null),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
